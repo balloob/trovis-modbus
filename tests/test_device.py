@@ -1,88 +1,116 @@
-"""End-to-end decoding + derived-value tests over a real Modbus server."""
+"""End-to-end tests of the object model over a real Modbus server."""
 
 from __future__ import annotations
 
+from datetime import date, time
+
 import pytest
 
-from trovis_modbus import Trovis557x
+from trovis_modbus import OperatingMode, Trovis557x, Weekday
+from trovis_modbus.components import MonthDay
 
 
-async def test_scaling_and_types(trovis: Trovis557x) -> None:
+async def test_device_info(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    assert trovis.get("trovis_r_modell") == 5579
-    assert trovis.get("trovis_r_anlage") == pytest.approx(2.1)
-    assert trovis.get("trovis_r_firmware") == pytest.approx(3.05)
-    assert trovis.get("trovis_f_AF1") == pytest.approx(12.3)
+    assert trovis.info.model == 5579
+    assert trovis.info.firmware_version == pytest.approx(3.05)
+    info = trovis.device_info
+    assert info.manufacturer == "Samson"
+    assert info.model == "Trovis 5579"
+    assert info.serial_number == "12345"
+    assert info.firmware_version == "3.05"
 
 
-async def test_int16_negative(trovis: Trovis557x) -> None:
+async def test_sensors(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    assert trovis.get("trovis_f_VF1") == pytest.approx(-5.0)
+    assert trovis.sensors.outside_1 == pytest.approx(12.3)
+    assert trovis.sensors.flow_1 == pytest.approx(-5.0)  # signed
+    assert trovis.sensors.storage_1 == pytest.approx(45.0)
+    assert trovis.sensors.storage_2 is None  # NaN sentinel
 
 
-async def test_nan_sentinel_becomes_none(trovis: Trovis557x) -> None:
+async def test_clock(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    assert trovis.get("trovis_f_SF2") is None
+    assert trovis.clock.time == time(14, 30)
+    assert trovis.clock.date == date(2026, 6, 21)
+    assert trovis.clock.datetime.isoformat() == "2026-06-21T14:30:00"
 
 
-async def test_coils(trovis: Trovis557x) -> None:
+async def test_controller(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    assert trovis.get("trovis_hk1_up1") is True
-    assert trovis.get("trovis_hk1_tagbetrieb") is True
-    assert trovis.get("trovis_r_sammelstoerung") is False
+    assert trovis.controller.switch_top is OperatingMode.AUTOMATIC
+    assert trovis.controller.max_flow_setpoint == pytest.approx(90.0)
+    assert trovis.controller.summer_start == MonthDay(day=15, month=5)
 
 
-async def test_derived_datetime(trovis: Trovis557x) -> None:
+async def test_heating_circuit_reads(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    assert trovis.get("trovis_z_datum_formatiert") == "21.06.2026"
-    assert trovis.get("trovis_z_uhrzeit_formatiert") == "14:30"
-    assert trovis.get("trovis_z_sommerbetrieb_ein_formatiert") == "15.05."
-    assert trovis.get("trovis_z_hk4_desinfektionstag_formatiert") == "Mi"
-    assert trovis.get("trovis_z_hk4_desinfektionsstart_formatiert") == "19:00"
+    hc1 = trovis.heating_circuit_1
+    assert hc1.mode is OperatingMode.AUTOMATIC
+    assert hc1.control_signal == 42
+    assert hc1.flow_setpoint == pytest.approx(55.0)
+    assert hc1.room_setpoint_active == pytest.approx(21.0)
+    assert hc1.pump_running is True
+    assert hc1.day_active is True
+    assert hc1.automatic is True
 
 
-async def test_derived_switch_and_mode(trovis: Trovis557x) -> None:
+async def test_circuit_offset_pattern(trovis: Trovis557x) -> None:
+    """Circuit 2 reads its own (+200) registers."""
     await trovis.async_update()
-    assert trovis.get("trovis_r_schalter_oben_formatiert") == "Auto"
-    assert trovis.get("trovis_hk1_betriebsart_formatiert") == "Auto"
-
-
-async def test_derived_hot_water(trovis: Trovis557x) -> None:
-    await trovis.async_update()
-    # soll 50, schaltdifferenz 10 -> "50-60°"; haltewert 48 -> "48-58°"
-    assert trovis.get("trovis_hk4_tagestemperaturen") == "50-60°"
-    assert trovis.get("trovis_hk4_nachttemperaturen") == "48-58°"
-    # SF1 45.0 + Ueberhoehung 22.0
-    assert trovis.get("trovis_hk4_ladetemperatur") == pytest.approx(67.0)
+    assert trovis.heating_circuit_2.flow_setpoint == pytest.approx(48.0)
+    assert trovis.heating_circuit_1.flow_setpoint == pytest.approx(55.0)
 
 
 async def test_heating_curve(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    curve = trovis.heating_curve(1)
-    assert curve is not None
-    assert len(curve) == 41
-    # day mode on, soll=20, niveau=0, steigung=1.0, clamp [20, 80]
-    assert curve[0] == pytest.approx(68.0)  # outside -20 °C
-    assert curve[-1] == pytest.approx(24.0)  # outside +20 °C
-    assert trovis.curve_x_values == list(range(-20, 21))
+    curve = trovis.heating_circuit_1.heating_curve()
+    assert curve is not None and len(curve) == 41
+    # day active, room 21, slope 1.2, level 0, clamp [20, 80]
+    assert curve[-1] == pytest.approx(26.4)  # outside +20 °C
+    assert trovis.heating_circuit_1.heating_curve("night") is not None
 
 
-async def test_write_register_roundtrip(trovis: Trovis557x) -> None:
+async def test_hot_water(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    await trovis.async_set_register("trovis_hk1_raumsoll_tag", 21.5)
-    await trovis.async_update()
-    assert trovis.get("trovis_hk1_raumsoll_tag") == pytest.approx(21.5)
+    hw = trovis.hot_water
+    assert hw.setpoint_day == pytest.approx(50.0)
+    assert hw.setpoint_active == pytest.approx(50.0)
+    assert hw.active_charge_setpoint == pytest.approx(67.0)
+    assert hw.disinfection_weekday is Weekday.WEDNESDAY
+    assert hw.disinfection_start == time(19, 0)
+    assert hw.automatic is True
+    assert hw.charging is True  # charge pump running
 
 
-async def test_write_coil_roundtrip(trovis: Trovis557x) -> None:
-    await trovis.async_update()
-    await trovis.async_set_coil("trovis_hk1_standby", True)
-    await trovis.async_update()
-    assert trovis.get("trovis_hk1_standby") is True
+async def test_independent_component_update(trovis: Trovis557x) -> None:
+    """A sub-system refreshes on its own, without the rest."""
+    await trovis.hot_water.async_update()
+    assert trovis.hot_water.setpoint_day == pytest.approx(50.0)
+    assert trovis.heating_circuit_1.flow_setpoint is None  # not updated yet
 
 
-async def test_all_keys_present_after_update(trovis: Trovis557x) -> None:
+async def test_update_listener(trovis: Trovis557x) -> None:
+    calls: list[int] = []
+    unsubscribe = trovis.hot_water.add_update_listener(lambda: calls.append(1))
+    await trovis.hot_water.async_update()
+    await trovis.hot_water.async_update()
+    assert len(calls) == 2
+    unsubscribe()
+    await trovis.hot_water.async_update()
+    assert len(calls) == 2  # no longer notified
+
+
+async def test_write_roundtrip(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    values = trovis.values
-    for key in Trovis557x.all_keys:
-        assert key in values
+    await trovis.heating_circuit_1.set_room_setpoint_day(21.5)
+    await trovis.hot_water.set_setpoint(52.0)
+    await trovis.heating_circuit_1.async_update()
+    await trovis.hot_water.async_update()
+    assert trovis.heating_circuit_1.room_setpoint_day == pytest.approx(21.5)
+    assert trovis.hot_water.setpoint_day == pytest.approx(52.0)
+
+
+async def test_write_rejects_readonly(trovis: Trovis557x) -> None:
+    with pytest.raises(AttributeError):
+        await trovis.heating_circuit_1.write("flow_setpoint", 50.0)

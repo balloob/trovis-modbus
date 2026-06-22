@@ -1,0 +1,4819 @@
+{
+"_source": "Tom-Bom-badil/samson_trovis_557x SmartHomeNG plugin (_register.py/_coils.py)",
+"registers": {
+"Geraetekennung": {
+"id": 0,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Erzeugnisnummer (Gerätekennung)"
+},
+"Anlage": {
+"id": 1,
+"art": "ro",
+"typ": "Version",
+"factor": 1,
+"digits": 1,
+"unit": "",
+"name": "Anlagenkennziffer"
+},
+"Firmware-Version": {
+"id": 2,
+"art": "ro",
+"typ": "Version",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Firmwareversion"
+},
+"Hardware-Version": {
+"id": 3,
+"art": "ro",
+"typ": "Version",
+"factor": 100,
+"digits": 2,
+"unit": "",
+"name": "Hardwareversion"
+},
+"Sonderfunktionen": {
+"id": 4,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Reglerupdate via Modbus / Reglerneustart"
+},
+"Regler-ID": {
+"id": 5,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Regler-ID (interne Seriennummer)"
+},
+"AussentempAF1": {
+"id": 9,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs AF1 (CL88)"
+},
+"AussentempAF2": {
+"id": 10,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs AF2"
+},
+"VorlauftempVF1": {
+"id": 12,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs VF1"
+},
+"VorlauftempVF2": {
+"id": 13,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs VF2"
+},
+"VorlauftempVF3": {
+"id": 14,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs VF3"
+},
+"VorlauftempVF4": {
+"id": 15,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs VF4"
+},
+"RueckltempRueF1": {
+"id": 16,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs RüF1"
+},
+"RueckltempRueF2": {
+"id": 17,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs RüF2"
+},
+"RueckltempRueF3": {
+"id": 18,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs RüF3"
+},
+"RaumtempRF1": {
+"id": 19,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs RF1"
+},
+"RaumtempRF2": {
+"id": 20,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs RF2"
+},
+"RaumtempRF3": {
+"id": 21,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs RF3"
+},
+"SpeichertempSF1": {
+"id": 22,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs SF1"
+},
+"SpeichertempSF2": {
+"id": 23,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingangs SF2"
+},
+"SpeichertempSF3FG3": {
+"id": 24,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Meßwert des Eingang SF3/FG3"
+},
+"FerngeberFG1": {
+"id": 25,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Meßwert des Eingangs FG1"
+},
+"FerngeberFG2": {
+"id": 26,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Meßwert des Eingangs FG2"
+},
+"MesswertImp-h": {
+"id": 28,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "imp/h",
+"name": "Meßwert [Imp/h] am Eingang WMZ"
+},
+"Messwertm3-h": {
+"id": 29,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.01,
+"digits": 2,
+"unit": "m³/h",
+"name": "Meßwert [m3/h] am Eingang WMZ"
+},
+"AA10-10V": {
+"id": 30,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "V",
+"name": "Analogausgang Regelkreis 1 0-10V"
+},
+"AA20-10V": {
+"id": 31,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "V",
+"name": "Analogausgang Regelkreis 2 0-10V"
+},
+"AA30-10V": {
+"id": 32,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "V",
+"name": "Analogausgang Regelkreis 3 0-10V"
+},
+"WMZR-Q": {
+"id": 33,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "  m³/h",
+"name": "WMZ Durchfluss"
+},
+"WMZR-P": {
+"id": 34,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "kW",
+"name": "WMZ Leistung"
+},
+"MaxVorlSollw": {
+"id": 98,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximaler Vorlaufsollwert des Reglers"
+},
+"Uhrzeit": {
+"id": 99,
+"art": "rw",
+"typ": "Uhrzeit",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Uhrzeit"
+},
+"Datum": {
+"id": 100,
+"art": "rw",
+"typ": "Datum",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Datum"
+},
+"Jahr": {
+"id": 101,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Jahr"
+},
+"Schalteroben": {
+"id": 102,
+"art": "ro",
+"typ": "Liste_Schalter",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Schalter RK1 (0=PA, 1=Auto, 2=Stdby, 3=Hand, 4=Sonne, 5=Mond)"
+},
+"Schaltermitte": {
+"id": 103,
+"art": "ro",
+"typ": "Liste_Schalter",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Schalter RK2 (0=PA, 1=Auto, 2=Stdby, 3=Hand, 4=Sonne, 5=Mond)"
+},
+"Schalterunten": {
+"id": 104,
+"art": "ro",
+"typ": "Liste_Schalter",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Schalter TW (0=PA, 1=Auto, 2=Stdby, 3=Hand)"
+},
+"BetriebsArtRk1": {
+"id": 105,
+"art": "rw",
+"typ": "Liste_Schalter",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "2=Stdby, 4=Sonne, 5=Mond (CL89)"
+},
+"StellsignalRk1": {
+"id": 106,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "%",
+"name": "Stellsignal Rk1 [0...100%] (CL90)"
+},
+"BetriebsArtRk2": {
+"id": 107,
+"art": "rw",
+"typ": "Liste_Schalter",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "2=Stdby, 4=Sonne, 5=Mond (CL91)"
+},
+"StellsignalRk2": {
+"id": 108,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "%",
+"name": "Stellsignal Rk2 [0...100%] (CL92)"
+},
+"BetriebsArtRk3": {
+"id": 109,
+"art": "rw",
+"typ": "Liste_Schalter",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "2=Stdby, 4=Sonne, 5=Mond (CL93)"
+},
+"StellsignalRk3": {
+"id": 110,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "%",
+"name": "Stellsignal Rk2 [0...100%] (CL94)"
+},
+"BetriebsArtTW": {
+"id": 111,
+"art": "rw",
+"typ": "Liste_Schalter",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "2=Stdby, 4=Sonne, 5=Mond (CL95)"
+},
+"SommerDatAnf": {
+"id": 112,
+"art": "rw",
+"typ": "Datum",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Datum Beginn Sommerzeitraum (CO5, Fb04)"
+},
+"SommerDatEnd": {
+"id": 113,
+"art": "rw",
+"typ": "Datum",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Datum Ende Sommerzeitraum (CO5, Fb04)"
+},
+"SommerTagzein": {
+"id": 114,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Anzahl Tage für Sommerbetrieb ein (CO5, Fb04)"
+},
+"SommerTagzaus": {
+"id": 115,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Anzahl Tage für Sommerbetrieb aus (CO5, Fb04)"
+},
+"SommerAT-Wert": {
+"id": 116,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Grenzwert Sommerbetrieb (CO5, Fb04)"
+},
+"ATVerzoegerung": {
+"id": 117,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "K/h",
+"name": "Verzögerung AT-Anpassung (CO5,Fb05/CO5,Fb06)"
+},
+"TempuewAbweichung": {
+"id": 120,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Temperaturüberwachung: Regelabweichung (CO5,Fb19)"
+},
+"TempuewZeitfenstr": {
+"id": 121,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Temperaturüberwachung: Zeitfenster (CO5,Fb19)"
+},
+"FrostschutzGW": {
+"id": 122,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Frostschutzgrenzwert (CO5, Fb09)"
+},
+"AnfangAT0V": {
+"id": 123,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Übertragungsbereichsanfang, AT 0V (CO5,Fb23)"
+},
+"EndeAT10V": {
+"id": 124,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Übertragungsbereichsende, AT 10V (CO5,Fb23)"
+},
+"MaxImp-h": {
+"id": 129,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "imp/h",
+"name": "Maximalgrenzwert ([Imp/h], CO5->Fb10)"
+},
+"MaxHImp-h": {
+"id": 130,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "imp/h",
+"name": "Maximalgrenzwert Heizbetrieb ([Imp/h], CO5->Fb10)"
+},
+"MaxTImp-h": {
+"id": 131,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "imp/h",
+"name": "Maximalgrenzwert Trinkwasser ([Imp/h], CO5->Fb10)"
+},
+"MaxWMZ": {
+"id": 132,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "kW",
+"name": "Maximalgrenzwert ([kW], CO6->Fb12)"
+},
+"MaxHWMZ": {
+"id": 133,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "kW",
+"name": "Maximalgrenzwert Heizbetrieb ([kW], CO6->Fb12)"
+},
+"MaxTWMZ": {
+"id": 134,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "kW",
+"name": "Maximalgrenzwert Trinkwasser ([kW], CO6->Fb12)"
+},
+"BegImpWMZ": {
+"id": 135,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Begrenzungsfaktor Impulseingang / Leistung"
+},
+"MBAnfang0-4mA": {
+"id": 136,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "mA",
+"name": "Meßbereichsanfang 0 oder 4 mA"
+},
+"MBEndem3-h": {
+"id": 137,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.01,
+"digits": 2,
+"unit": "m³/h",
+"name": "Meßbereichsende bei 20mA [m3/h]"
+},
+"KpKorrDfluss": {
+"id": 138,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Begrenzungsfaktor Durchfluss"
+},
+"Maxm3-hWMZ": {
+"id": 139,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.01,
+"digits": 2,
+"unit": "m³/h",
+"name": "Maximalgrenzwert ([m3/h], CO5,CO6->Fb11)"
+},
+"MaxHm3-hWMZ": {
+"id": 140,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.01,
+"digits": 2,
+"unit": "m³/h",
+"name": "Maximalgrenzwert Heizbetr. ([m3/h], CO5,CO6->Fb11)"
+},
+"MaxTm3-hWMZ": {
+"id": 141,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.01,
+"digits": 2,
+"unit": "m³/h",
+"name": "Maximalgrenzwert Trinkw. ([m3/h], CO5,CO6->Fb11)"
+},
+"Stationsadresse": {
+"id": 142,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Stationsadresse (Kaltstart 255)"
+},
+"Write-EnModem": {
+"id": 144,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Modem-Schreibfreigabe (Schlüsselzahleingabe)"
+},
+"ZyklInitModem": {
+"id": 145,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Modem-Zyklische Initialisierung"
+},
+"WahlpauseModem": {
+"id": 146,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Modem-Wahlpause"
+},
+"AnwWdhModem": {
+"id": 147,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Modem-Anzahl der Anwahlversuche"
+},
+"TimeoutModem": {
+"id": 148,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Modem-Timeout"
+},
+"FehlerstatusReg": {
+"id": 149,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Fehlerstatusregister (CL1)"
+},
+"FehlerstatArchiv": {
+"id": 151,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Fehlerstatusarchiv"
+},
+"FehlerzaehlerReg": {
+"id": 153,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Fehlerzählerregister"
+},
+"FehlerStoeranwahl": {
+"id": 154,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Störanwahl und Displayanzeige Error (Bits des FSR)"
+},
+"DlogZykluszeit": {
+"id": 299,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Datenlogger: Zykluszeit in Minuten"
+},
+"DlogAnalogRegNr01": {
+"id": 300,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Vorlaufsollwert Rk1 (HR 41000)"
+},
+"DlogAnalogRegNr02": {
+"id": 301,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Vorlaufsollwert Rk2 (HR 41200)"
+},
+"DlogAnalogRegNr03": {
+"id": 302,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #3"
+},
+"DlogAnalogRegNr04": {
+"id": 303,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #4"
+},
+"DlogAnalogRegNr05": {
+"id": 304,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #5"
+},
+"DlogAnalogRegNr06": {
+"id": 305,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #6"
+},
+"DlogAnalogRegNr07": {
+"id": 306,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #7"
+},
+"DlogAnalogRegNr08": {
+"id": 307,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #8"
+},
+"DlogAnalogRegNr09": {
+"id": 308,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #9"
+},
+"DlogAnalogRegNr10": {
+"id": 309,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Analoger Datenpunkt #10"
+},
+"DlogBinaerRegNr01": {
+"id": 310,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #01"
+},
+"DlogBinaerRegNr02": {
+"id": 311,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #02"
+},
+"DlogBinaerRegNr03": {
+"id": 312,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #03"
+},
+"DlogBinaerRegNr04": {
+"id": 313,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #04"
+},
+"DlogBinaerRegNr05": {
+"id": 314,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #05"
+},
+"DlogBinaerRegNr06": {
+"id": 315,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #06"
+},
+"DlogBinaerRegNr07": {
+"id": 316,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #07"
+},
+"DlogBinaerRegNr08": {
+"id": 317,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #08"
+},
+"DlogBinaerRegNr09": {
+"id": 318,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #09"
+},
+"DlogBinaerRegNr10": {
+"id": 319,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Datenlogger: Binärer Datenpunkt #10"
+},
+"VorlSollwRk1": {
+"id": 999,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlaufsollwert Rk1 (CL116)"
+},
+"MaxVorlRk1": {
+"id": 1000,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Vorlauftemperatur Rk1"
+},
+"MinVorlRk1": {
+"id": 1001,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Minimale Vorlauftemperatur Rk1"
+},
+"TagSollRk1": {
+"id": 1002,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert Tag Rk1"
+},
+"NachtSollRk1": {
+"id": 1003,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert Nacht Rk1"
+},
+"AktSollRk1": {
+"id": 1004,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert aktuell Rk1"
+},
+"SteigHeizKLRk1": {
+"id": 1005,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Steigung VL Heizkennlinie Rk1 (KL nach Steigung)"
+},
+"NivHeizKLRk1": {
+"id": 1006,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Niveau VL Heizkennlinie Rk1 (KL nach Steigung)"
+},
+"StgRuecklKLRk1": {
+"id": 1008,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Steigung Rücklaufkennlinie Rk1 (KL nach Steigung)"
+},
+"NivRuecklKLRk1": {
+"id": 1009,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Niveau Rücklaufkennlinie Rk1 (KL nach Steigung)"
+},
+"MaxRuecklRk1": {
+"id": 1010,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Rücklauftemperatur Rk1"
+},
+"FussRuecklRk1": {
+"id": 1011,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Fußpunkt Rücklauftemperatur Rk1"
+},
+"AT1HeizKLRk1": {
+"id": 1012,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 1.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"AT2HeizKLRk1": {
+"id": 1013,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 2.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"AT3HeizKLRk1": {
+"id": 1014,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 3.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"AT4HeizKLRk1": {
+"id": 1015,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 4.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"VT1THeizKLRk1": {
+"id": 1016,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 1.Punkt Rk1 (KL 4 Punkte)"
+},
+"VT2THeizKLRk1": {
+"id": 1017,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 2.Punkt Rk1 (KL 4 Punkte)"
+},
+"VT3THeizKLRk1": {
+"id": 1018,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 3.Punkt Rk1 (KL 4 Punkte)"
+},
+"VT4THeizKLRk1": {
+"id": 1019,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 4.Punkt Rk1 (KL 4 Punkte)"
+},
+"VT1NHeizKLRk1": {
+"id": 1020,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 1.Punkt Rk1 (KL 4 Punkte)"
+},
+"VT2NHeizKLRk1": {
+"id": 1021,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 2.Punkt Rk1 (KL 4 Punkte)"
+},
+"VT3NHeizKLRk1": {
+"id": 1022,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 3.Punkt Rk1 (KL 4 Punkte)"
+},
+"VT4NHeizKLRk1": {
+"id": 1023,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 4.Punkt Rk1 (KL 4 Punkte)"
+},
+"RL1HeizKLRk1": {
+"id": 1024,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 1.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"RL2HeizKLRk1": {
+"id": 1025,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 2.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"RL3HeizKLRk1": {
+"id": 1026,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 3.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"RL4HeizKLRk1": {
+"id": 1027,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 4.Punkt Rk1 (KL nach 4 Punkten)"
+},
+"RuecklSollwRk1": {
+"id": 1032,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklaufsollwert Rk1 (CL117)"
+},
+"BegRuecklRk1": {
+"id": 1033,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Begrenzungsfaktor Rücklauf Rk1 (CO1, Fb03)"
+},
+"ATAusNennbRk1": {
+"id": 1035,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Abschaltwert Nennbetrieb Rk1"
+},
+"ATAusReduzRk1": {
+"id": 1036,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Abschaltwert Reduzierbetrieb Rk1"
+},
+"ATEinNennbRk1": {
+"id": 1037,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Einschaltwert Nennbetrieb Rk1"
+},
+"UeberhoehSollRk1": {
+"id": 1038,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Überhöhung Sollwert Primärtauscherregelung"
+},
+"SollbinBedarfRk1": {
+"id": 1039,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert bei binärer Bedarfsverarbeitung"
+},
+"ZykluszeitRk1": {
+"id": 1040,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Zykluszeit Rk1 (CO1, Fb09)"
+},
+"TagSollFWRk1": {
+"id": 1041,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert Tagbetrieb Rk1 (Festwertregelung)"
+},
+"NachtSollFWRk1": {
+"id": 1042,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert Nachtbetrieb Rk1 (Festwertregelung)"
+},
+"KpKuzztadapRk1": {
+"id": 1043,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Kp (Verstärung) Kurzzeitadaption Rk1 (C01F09)"
+},
+"SonderPufferSoll": {
+"id": 1044,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sonder-Pufferspeichersollwert, Anl 14,15 (CL133)"
+},
+"StarttempRk1": {
+"id": 1055,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "CO1, Fb05: Starttemperatur Rk1"
+},
+"AnfangBedarf0V": {
+"id": 1056,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Übertragungsbereichsanfang, Bedarf 0V (CO1, Fb08)"
+},
+"EndeBedarf10V": {
+"id": 1057,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Übertragungsbereichsende, Bedarf 10V (CO1, Fb08)"
+},
+"TempanstiegRk1": {
+"id": 1058,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C/h",
+"name": "CO1, Fb05: Temperaturanstieg Rk1"
+},
+"MaxTempRk1": {
+"id": 1059,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "CO1, Fb05: Maximaltemperatur Rk1"
+},
+"HalteMaxTempRk1": {
+"id": 1060,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 1,
+"unit": "d",
+"name": "CO1, Fb05: Haltezeit Maximaltemperatur Rk1"
+},
+"TempAbsenkngRk1": {
+"id": 1061,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C/h",
+"name": "CO1, Fb05: Temperaturabsenkung Rk1"
+},
+"RegdiffVorlRk1": {
+"id": 1062,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Regeldifferenz Vorlauf Rk1"
+},
+"BegRegdiffRk1": {
+"id": 1063,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Maximale Regelabweichung Rk1 (CO1, Fb13)"
+},
+"KpRk1Y1": {
+"id": 1064,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Proportionalverstärkung Rk1(Y1)"
+},
+"TnRk1Y1": {
+"id": 1065,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Nachstellzeit Rk1(Y1)"
+},
+"TyRk1": {
+"id": 1066,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Laufzeit Stellantrieb Rk1 (bei 3-Punkt)"
+},
+"TvY1": {
+"id": 1067,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Vorhaltezeit Y1 (bei 0...10V)"
+},
+"SchaltdiffRk1": {
+"id": 1068,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Schaltdifferenz Rk1 (bei 2-Punkt)"
+},
+"MinEinRk1": {
+"id": 1069,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Einschaltzeit Rk1 (bei 2-Punkt)"
+},
+"MinAusRk1": {
+"id": 1070,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Ausschaltzeit Rk1 (bei 2-Punkt)"
+},
+"AktuelMittelwY1": {
+"id": 1089,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Aktueller Mittelwert, Y1 bei aktiver Regelung"
+},
+"LMonatMittelwY1": {
+"id": 1090,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Mittelwert letzter Monat, Y1 bei aktiver Regelung"
+},
+"VMonatMittelwY1": {
+"id": 1091,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Mittelwert vorletzter Monat, Y1 bei aktiv. Regel."
+},
+"VorlSollwRk2": {
+"id": 1199,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlaufsollwert Rk2 (CL118)"
+},
+"MaxVorlRk2": {
+"id": 1200,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Vorlauftemperatur Rk2"
+},
+"MinVorlRk2": {
+"id": 1201,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Minimale Vorlauftemperatur Rk2"
+},
+"TagSollRk2": {
+"id": 1202,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert Tag Rk2"
+},
+"NachtSollRk2": {
+"id": 1203,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert Nacht Rk2"
+},
+"AktSollRk2": {
+"id": 1204,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert aktuell Rk2"
+},
+"SteigHeizKLRk2": {
+"id": 1205,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Steigung VL Heizkennlinie Rk2 (KL nach Steigung)"
+},
+"NivHeizKLRk2": {
+"id": 1206,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Niveau VL Heizkennlinie Rk2 (KL nach Steigung)"
+},
+"StgRuecklKLRk2": {
+"id": 1208,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Steigung Rücklaufkennlinie Rk2 (KL nach Steigung)"
+},
+"NivRuecklKLRk2": {
+"id": 1209,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Niveau Rücklaufkennlinie Rk2 (KL nach Steigung)"
+},
+"MaxRuecklRk2": {
+"id": 1210,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Rücklauftemperatur Rk2 (KL nach Steigung)"
+},
+"FussRuecklRk2": {
+"id": 1211,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Fußpunkt Rücklauftemperatur Rk2 (KL nach Steigung)"
+},
+"AT1HeizKLRk2": {
+"id": 1212,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 1.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"AT2HeizKLRk2": {
+"id": 1213,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 2.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"AT3HeizKLRk2": {
+"id": 1214,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 3.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"AT4HeizKLRk2": {
+"id": 1215,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 4.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"VT1THeizKLRk2": {
+"id": 1216,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 1.Punkt Rk2 (KL 4 Punkte)"
+},
+"VT2THeizKLRk2": {
+"id": 1217,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 2.Punkt Rk2 (KL 4 Punkte)"
+},
+"VT3THeizKLRk2": {
+"id": 1218,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 3.Punkt Rk2 (KL 4 Punkte)"
+},
+"VT4THeizKLRk2": {
+"id": 1219,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 4.Punkt Rk2 (KL 4 Punkte)"
+},
+"VT1NHeizKLRk2": {
+"id": 1220,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 1.Punkt Rk2 (KL 4 Punkte)"
+},
+"VT2NHeizKLRk2": {
+"id": 1221,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 2.Punkt Rk2 (KL 4 Punkte)"
+},
+"VT3NHeizKLRk2": {
+"id": 1222,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 3.Punkt Rk2 (KL 4 Punkte)"
+},
+"VT4NHeizKLRk2": {
+"id": 1223,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 4.Punkt Rk2 (KL 4 Punkte)"
+},
+"RL1HeizKLRk2": {
+"id": 1224,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 1.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"RL2HeizKLRk2": {
+"id": 1225,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 2.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"RL3HeizKLRk2": {
+"id": 1226,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 3.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"RL4HeizKLRk2": {
+"id": 1227,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 4.Punkt Rk2 (KL nach 4 Punkten)"
+},
+"RuecklSollwRk2": {
+"id": 1232,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklaufsollwert Rk2 (CL119)"
+},
+"BegRuecklRk2": {
+"id": 1233,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Begrenzungsfaktor Rücklauf Rk2 (CO2, Fb03)"
+},
+"ATAusNennbRk2": {
+"id": 1235,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Abschaltwert Nennbetrieb Rk2"
+},
+"ATAusReduzRk2": {
+"id": 1236,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Abschaltwert Reduzierbetrieb Rk2"
+},
+"ATEinNennbRk2": {
+"id": 1237,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Einschaltwert Nennbetrieb Rk2"
+},
+"UeberhoehSollRk2": {
+"id": 1238,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Überhöhung Sollwert Primärtauscherregelung"
+},
+"SollbinBedarfRk2": {
+"id": 1239,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert bei binärer Bedarfsverarbeitung"
+},
+"ZykluszeitRk2": {
+"id": 1240,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Zykluszeit Rk2 (CO2, Fb09)"
+},
+"TagSollFWRk2": {
+"id": 1241,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert Tagbetrieb Rk2 (Festwertregelung)"
+},
+"NachtSollFWRk2": {
+"id": 1242,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert Nachtbetrieb Rk2 (Festwertregelung)"
+},
+"KpKuzztadapRk2": {
+"id": 1243,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Kp (Verstärung) Kurzzeitadaption Rk2 (C02F09)"
+},
+"StarttempRk2": {
+"id": 1255,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "CO2, Fb05: Starttemperatur Rk2"
+},
+"TempanstiegRk2": {
+"id": 1258,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C/h",
+"name": "CO2, Fb05: Temperaturanstieg Rk2"
+},
+"MaxTempRk2": {
+"id": 1259,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "CO2, Fb05: Maximaltemperatur Rk2"
+},
+"HalteMaxTempRk2": {
+"id": 1260,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "d",
+"name": "CO2, Fb05: Haltezeit Maximaltemperatur Rk2"
+},
+"TempAbsenkngRk2": {
+"id": 1261,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C/h",
+"name": "CO2, Fb05: Temperaturabsenkung Rk2"
+},
+"RegdiffVorlRk2": {
+"id": 1262,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Regeldifferenz Vorlauf Rk2"
+},
+"BegRegdiffRk2": {
+"id": 1263,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Maximale Regelabweichung Rk2 (CO2, Fb13)"
+},
+"KpRk2Y2": {
+"id": 1264,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Proportionalverstärkung Rk2(Y2)"
+},
+"TnRk2Y2": {
+"id": 1265,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Nachstellzeit Rk2(Y2)"
+},
+"TyRk2": {
+"id": 1266,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Laufzeit Stellantrieb Rk2 (bei 3-Punkt)"
+},
+"TvY2": {
+"id": 1467,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Vorhaltezeit Y2 (bei 0...10V)"
+},
+"SchaltdiffRk2": {
+"id": 1268,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Schaltdifferenz Rk2 (bei 2-Punkt)"
+},
+"MinEinRk2": {
+"id": 1269,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Einschaltzeit Rk2 (bei 2-Punkt)"
+},
+"MinAusRk2": {
+"id": 1270,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Ausschaltzeit Rk2 (bei 2-Punkt)"
+},
+"VorlSollwRk3": {
+"id": 1399,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlaufsollwert Rk3 (CL118)"
+},
+"MaxVorlRk3": {
+"id": 1400,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Vorlauftemperatur Rk3"
+},
+"MinVorlRk3": {
+"id": 1401,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Minimale Vorlauftemperatur Rk3"
+},
+"TagSollRk3": {
+"id": 1402,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert Tag Rk3"
+},
+"NachtSollRk3": {
+"id": 1403,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert Nacht Rk3"
+},
+"AktSollRk3": {
+"id": 1404,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Raumsollwert aktuell Rk3"
+},
+"SteigHeizKLRk3": {
+"id": 1405,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Steigung VL Heizkennlinie Rk3 (KL nach Steigung)"
+},
+"NivHeizKLRk3": {
+"id": 1406,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Niveau VL Heizkennlinie Rk3 (KL nach Steigung)"
+},
+"StgRuecklKLRk3": {
+"id": 1408,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Steigung Rücklaufkennlinie Rk3 (KL nach Steigung)"
+},
+"NivRuecklKLRk3": {
+"id": 1409,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Niveau Rücklaufkennlinie Rk3 (KL nach Steigung)"
+},
+"MaxRuecklRk3": {
+"id": 1410,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Rücklauftemperatur Rk3 (KL nach Steigung)"
+},
+"FussRuecklRk3": {
+"id": 1411,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Fußpunkt Rücklauftemperatur Rk3 (KL nach Steigung)"
+},
+"AT1HeizKLRk3": {
+"id": 1412,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 1.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"AT2HeizKLRk3": {
+"id": 1413,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 2.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"AT3HeizKLRk3": {
+"id": 1414,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 3.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"AT4HeizKLRk3": {
+"id": 1415,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Außentemperatur 4.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"VT1THeizKLRk3": {
+"id": 1416,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 1.Punkt Rk3 (KL 4 Punkte)"
+},
+"VT2THeizKLRk3": {
+"id": 1417,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 2.Punkt Rk3 (KL 4 Punkte)"
+},
+"VT3THeizKLRk3": {
+"id": 1418,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 3.Punkt Rk3 (KL 4 Punkte)"
+},
+"VT4THeizKLRk3": {
+"id": 1419,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Tag 4.Punkt Rk3 (KL 4 Punkte)"
+},
+"VT1NHeizKLRk3": {
+"id": 1420,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 1.Punkt Rk3 (KL 4 Punkte)"
+},
+"VT2NHeizKLRk3": {
+"id": 1421,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 2.Punkt Rk3 (KL 4 Punkte)"
+},
+"VT3NHeizKLRk3": {
+"id": 1422,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 3.Punkt Rk3 (KL 4 Punkte)"
+},
+"VT4NHeizKLRk3": {
+"id": 1423,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Vorlauftemperatur Nacht 4.Punkt Rk3 (KL 4 Punkte)"
+},
+"RL1HeizKLRk3": {
+"id": 1424,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 1.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"RL2HeizKLRk3": {
+"id": 1425,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 2.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"RL3HeizKLRk3": {
+"id": 1426,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 3.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"RL4HeizKLRk3": {
+"id": 1427,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklauftemperatur 4.Punkt Rk3 (KL nach 4 Punkten)"
+},
+"RuecklSollwRk3": {
+"id": 1432,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Rücklaufsollwert Rk3 (CL119)"
+},
+"BegRuecklRk3": {
+"id": 1433,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Begrenzungsfaktor Rücklauf Rk3 (CO2, Fb03)"
+},
+"ATAusNennbRk3": {
+"id": 1435,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Abschaltwert Nennbetrieb Rk3"
+},
+"ATAusReduzRk3": {
+"id": 1436,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Abschaltwert Reduzierbetrieb Rk3"
+},
+"ATEinNennbRk3": {
+"id": 1437,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "AT-Einschaltwert Nennbetrieb Rk3"
+},
+"ZykluszeitRk3": {
+"id": 1440,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Zykluszeit Rk3 (CO2, Fb09)"
+},
+"TagSollFWRk3": {
+"id": 1441,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert Tagbetrieb Rk3 (Festwertregelung)"
+},
+"NachtSollFWRk3": {
+"id": 1442,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Sollwert Nachtbetrieb Rk3 (Festwertregelung)"
+},
+"KpKuzztadapRk3": {
+"id": 1443,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Kp (Verstärung) Kurzzeitadaption Rk3 (C02F09)"
+},
+"StarttempRk3": {
+"id": 1455,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "CO2, Fb05: Starttemperatur Rk3"
+},
+"TempanstiegRk3": {
+"id": 1458,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C/h",
+"name": "CO2, Fb05: Temperaturanstieg Rk3"
+},
+"MaxTempRk3": {
+"id": 1459,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "CO2, Fb05: Maximaltemperatur Rk3"
+},
+"HalteMaxTempRk3": {
+"id": 1460,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "d",
+"name": "CO2, Fb05: Haltezeit Maximaltemperatur Rk3"
+},
+"TempAbsenkngRk3": {
+"id": 1461,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C/h",
+"name": "CO2, Fb05: Temperaturabsenkung Rk3"
+},
+"RegdiffVorlRk3": {
+"id": 1462,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Regeldifferenz Vorlauf Rk3"
+},
+"BegRegdiffRk3": {
+"id": 1463,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Maximale Regelabweichung Rk3 (CO2, Fb13)"
+},
+"KpRk3Y2": {
+"id": 1464,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Proportionalverstärkung Rk3(Y2)"
+},
+"TnRk3Y2": {
+"id": 1465,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Nachstellzeit Rk3(Y2)"
+},
+"TyRk3": {
+"id": 1466,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Laufzeit Stellantrieb Rk3 (bei 3-Punkt)"
+},
+"SchaltdiffRk3": {
+"id": 1468,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Schaltdifferenz Rk3 (bei 2-Punkt)"
+},
+"MinEinRk3": {
+"id": 1469,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Einschaltzeit Rk3 (bei 2-Punkt)"
+},
+"MinAusRk3": {
+"id": 1470,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Ausschaltzeit Rk3 (bei 2-Punkt)"
+},
+"TWSollw": {
+"id": 1799,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Trinkwasser (Speicher)-Sollwert Tag"
+},
+"MaxTWSollw": {
+"id": 1800,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Einstellgrenztemperatur TW-Sollwert"
+},
+"MinTWSollw": {
+"id": 1801,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Minimale Einstellgrenztemperatur TW-Sollwert"
+},
+"SchaltdiffTW": {
+"id": 1802,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Schaltdifferenz Trinkwasser (bzgl. TWSollw)"
+},
+"LadTempdiffTW": {
+"id": 1803,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Ladetemperaturüberhöhung (bzgl. TWSollw)"
+},
+"NachlaufSLP": {
+"id": 1804,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Nachlauffaktor der SLP"
+},
+"MaxLadeTW": {
+"id": 1805,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale LadetemperaturTW"
+},
+"TWHaltewert": {
+"id": 1806,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Haltewert Trinkwasser (minimale Temperatur TW)"
+},
+"TWSollwAkt": {
+"id": 1807,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Aktueller Trinkwassersollwert"
+},
+"SonderTWSollw": {
+"id": 1808,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "TW-Sollwert aktuell (CL112)"
+},
+"SolarUPEIN": {
+"id": 1809,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Solarkreispumpe EIN"
+},
+"SolarUPAUS": {
+"id": 1810,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Solarkreispumpe AUS"
+},
+"SolarmaxSpeich": {
+"id": 1811,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Speichertemperatur"
+},
+"Solarbetrh": {
+"id": 1812,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "h",
+"name": "Solarkreisbetriebsstunden (Reset durch „0“)"
+},
+"RuecklSollwTW": {
+"id": 1827,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Maximale Rücklauftemperatur TW"
+},
+"BegRuecklTW": {
+"id": 1828,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Begrenzungsfaktor Rücklauf TW (CO4, Fb03)"
+},
+"ThermDesSollw": {
+"id": 1829,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Desinfektionstemperatur"
+},
+"ThermDesTag": {
+"id": 1830,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Wochentag der thermischen Desinfektion"
+},
+"ThermDesStart": {
+"id": 1831,
+"art": "rw",
+"typ": "Uhrzeit",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Startzeit der thermischen Desinfektion"
+},
+"ThermDesStop": {
+"id": 1832,
+"art": "rw",
+"typ": "Uhrzeit",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Stoppzeit der thermischen Desinfektion"
+},
+"ZeitParallelTW": {
+"id": 1833,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Zeit bis Abbruch Parallellauf (CO4, Fb06)"
+},
+"GTParallelTW": {
+"id": 1834,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "VL-Grenztemperatur für Parallellauf (CO4, Fb06)"
+},
+"ZeitVorrangTW": {
+"id": 1835,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Zeit bis Trinkwasservorrang (CO4, Fb08/ 09)"
+},
+"BegInversregTW": {
+"id": 1836,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Einflussfaktor Inversregelung (CO4, Fb08)"
+},
+"AktiverLadeSoll": {
+"id": 1837,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Aktiver Ladetemperatur-Sollwert"
+},
+"ThermDesHalte": {
+"id": 1838,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Haltezeit Desinfektionstemperatur"
+},
+"VorrangTWRK": {
+"id": 1839,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "RK-Auswahl: 1=RK1/2=RK2/3=RK1+2"
+},
+"RegeldiffTW": {
+"id": 1862,
+"art": "ro",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "°C",
+"name": "Regeldifferenz TW-Kreis"
+},
+"BegRdiffTW": {
+"id": 1863,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Maximale Regelabweichung TW-Kreis (CO4, Fb13)"
+},
+"KpTW": {
+"id": 1864,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "",
+"name": "Proportionalverstärkung TW-Kreis"
+},
+"TnTW": {
+"id": 1865,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Nachstellzeit TW-Kreis"
+},
+"TyTW": {
+"id": 1866,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Laufzeit Stellantrieb TW-Kreis (bei 3-Punkt)"
+},
+"TvTW": {
+"id": 1867,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "Vorhaltezeit TW-Kreis (bei 0...10V)"
+},
+"SchaltdiffTW2P": {
+"id": 1868,
+"art": "rw",
+"typ": "Zahl",
+"factor": 0.1,
+"digits": 1,
+"unit": "K",
+"name": "Schaltdifferenz TW-Kreis (bei 2-Punkt)"
+},
+"MinEinTW": {
+"id": 1869,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Einschaltzeit TW-Kreis (bei 2-Punkt)"
+},
+"MinAusTW": {
+"id": 1870,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "min",
+"name": "Minimale Ausschaltzeit TW-Kreis (bei 2-Punkt)"
+},
+"ZeitHK1": {
+"id": 2999,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Zeitprogramm HK1"
+},
+"ZeitHK2": {
+"id": 3041,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Zeitprogramm HK2"
+},
+"ZeitHK3": {
+"id": 3083,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Zeitprogramm HK3"
+},
+"ZeitWW": {
+"id": 3125,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Zeitprogramm WW"
+},
+"ZeitZP": {
+"id": 3167,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Zeitprogramm ZP"
+},
+"ZeitWMZ": {
+"id": 3209,
+"art": "ro",
+"typ": "???",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Zeitprogramm WMZ"
+},
+"Test01": {
+"id": 6399,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test02": {
+"id": 6400,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test03": {
+"id": 6401,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test04": {
+"id": 6402,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test05": {
+"id": 6403,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test06": {
+"id": 6404,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test07": {
+"id": 6405,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test08": {
+"id": 6406,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test09": {
+"id": 6407,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test10": {
+"id": 6408,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test11": {
+"id": 6409,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test12": {
+"id": 6410,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test13": {
+"id": 6411,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test14": {
+"id": 6412,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test15": {
+"id": 6413,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test16": {
+"id": 6414,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test17": {
+"id": 6415,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test18": {
+"id": 6416,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test19": {
+"id": 6417,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"Test20": {
+"id": 6418,
+"art": "ro",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "",
+"name": "Testregister für den internen Gebrauch"
+},
+"M-BusAusleseint": {
+"id": 6487,
+"art": "rw",
+"typ": "Zahl",
+"factor": 1,
+"digits": 0,
+"unit": "s",
+"name": "M-Bus Ausleseintervall"
+},
+"Hardw-VersM-Bus": {
+"id": 6490,
+"art": "ro",
+"typ": "Version",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Hardware-Version M-Bus-Platine"
+},
+"Software-Version": {
+"id": 6491,
+"art": "ro",
+"typ": "Version",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Software-Version M-Bus-Platine"
+},
+"Bootprog-Version": {
+"id": 6493,
+"art": "ro",
+"typ": "Version",
+"factor": 1,
+"digits": 2,
+"unit": "",
+"name": "Bootprogramm-Version M-Bus-Platine"
+}
+},
+"coils": {
+"Sammelstoerung": {
+"id": 0,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Sammelstoerung, Fehlerstatusregister HR40150 > 0"
+},
+"Dateneingaktiv": {
+"id": 1,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Dateneingabe aktiv"
+},
+"Dateneingstattg": {
+"id": 2,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Dateneingabe stattgefunden"
+},
+"SammelEbenenbit": {
+"id": 3,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Sammel-Ebenenbit CL88-CL121"
+},
+"StatusHandbRk1": {
+"id": 4,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Status Handbetrieb Heizkreis RK1"
+},
+"StatusHandbRk2": {
+"id": 5,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Status Handbetrieb Heizkreis RK2"
+},
+"StatusHandbRk3": {
+"id": 6,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Status Handbetrieb Heizkreis RK3"
+},
+"StatusHandbTW": {
+"id": 7,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Status Handbetrieb TW"
+},
+"Sommerbetrieb": {
+"id": 8,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Sommerbetrieb aktiv (CO5, Fb04)"
+},
+"WMZKomStoer#1": {
+"id": 9,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Kommunikationsstoerung Zaehlerbus WMZ #1 (CO6, Fb10)"
+},
+"WMZKomStoer#2": {
+"id": 10,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Kommunikationsstoerung Zaehlerbus WMZ #2 (CO6, Fb10)"
+},
+"WMZKomStoer#3": {
+"id": 11,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Kommunikationsstoerung Zaehlerbus WMZ #3 (CO6, Fb10)"
+},
+"WMZFehlerWMZ#1": {
+"id": 12,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Fehler WMZ #1 (CO6, Fb10)"
+},
+"WMZFehlerWMZ#2": {
+"id": 13,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Fehler WMZ #2 (CO6, Fb10)"
+},
+"WMZFehlerWMZ#3": {
+"id": 14,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Fehler WMZ #3 (CO6, Fb10)"
+},
+"WMZ-Auslesung#1": {
+"id": 15,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "1 = 1xAuslesung WMZ #1 veranlassen"
+},
+"WMZ-Auslesung#2": {
+"id": 16,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "1 = 1xAuslesung WMZ #2 veranlassen"
+},
+"WMZ-Auslesung#3": {
+"id": 17,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "1 = 1xAuslesung WMZ #3 veranlassen"
+},
+"WMZDflussBeg#1": {
+"id": 21,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Durchflussbegrenzung #1 aktiv (CO5,Fb11/CO6,Fb11)"
+},
+"WMZLeistBeg#1": {
+"id": 22,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Leistungsbegrenzung #1 aktiv (CO5,Fb10/ CO6,Fb12)"
+},
+"BinaereingBE01": {
+"id": 23,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE01"
+},
+"BinaereingBE02": {
+"id": 24,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE02"
+},
+"BinaereingBE03": {
+"id": 25,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE03"
+},
+"BinaereingBE04": {
+"id": 26,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE04"
+},
+"BinaereingBE05": {
+"id": 27,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE05"
+},
+"BinaereingBE06": {
+"id": 28,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE06"
+},
+"BinaereingBE07": {
+"id": 29,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE07"
+},
+"BinaereingBE08": {
+"id": 30,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE08"
+},
+"BinaereingBE09": {
+"id": 31,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE09"
+},
+"BinaereingBE10": {
+"id": 32,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE10"
+},
+"BinaereingBE11": {
+"id": 33,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE11"
+},
+"BinaereingBE12": {
+"id": 34,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE12"
+},
+"BinaereingBE13": {
+"id": 35,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE13"
+},
+"BinaereingBE14": {
+"id": 36,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE14"
+},
+"BinaereingBE15": {
+"id": 37,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE15"
+},
+"BinaereingBE16": {
+"id": 38,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE16"
+},
+"BinaereingBE17": {
+"id": 39,
+"art": "ro",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Status Binaereingang BE17"
+},
+"BinaerausgBA1": {
+"id": 56,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Umwaelzpumpe Rk1 (UP1 Netzseite, CL96)"
+},
+"BinaerausgBA2": {
+"id": 57,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Umwaelzpumpe Rk2 (UP2, Netzseite, CL97)"
+},
+"BinaerausgBA3": {
+"id": 58,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Umwaelzpumpe Rk3 (UP3, Netzseite, CL98)"
+},
+"BinaerausgBA4": {
+"id": 59,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Speicherladepumpe TW (SLP, CL99)"
+},
+"BinaerausgBA5": {
+"id": 60,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Zirkulationspumpe (ZP, CL100)"
+},
+"BinaerausgBA6": {
+"id": 61,
+"art": "rw",
+"typ": "Liste_HZ",
+"unit": "",
+"name": "Rk13-Pkt Zu-Signal (Vorgabe in HR40107)"
+},
+"BinaerausgBA7": {
+"id": 62,
+"art": "rw",
+"typ": "Liste_HA",
+"unit": "",
+"name": "Rk13-Pkt Auf-Signal (HR40107), 2-Pkt (CL102)"
+},
+"BinaerausgBA8": {
+"id": 63,
+"art": "rw",
+"typ": "Liste_HZ",
+"unit": "",
+"name": "Rk23-Pkt Zu-Signal (Vorgabe in HR40109)"
+},
+"BinaerausgBA9": {
+"id": 64,
+"art": "rw",
+"typ": "Liste_HA",
+"unit": "",
+"name": "Rk23-Pkt Auf-Signal (HR40109), 2-Pkt (CL104)"
+},
+"BinaerausgBA10": {
+"id": 65,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Tauscherladepumpe (TLP)"
+},
+"BinaerausgBA11": {
+"id": 66,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "??? (CP)"
+},
+"BinaerausgBA12": {
+"id": 67,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Pumpenmanagement UP1Ein/Aus (CL107)"
+},
+"BinaerausgBA13": {
+"id": 68,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Pumpenmanagement Drehzahl UP1(CL108)"
+},
+"EBNAussentemAF1": {
+"id": 87,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Aussentemperatur AF1 (HR40010)"
+},
+"EBNBetrArtRk1": {
+"id": 88,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Betriebsart Rk1 (HR40106)"
+},
+"EBNStellsigRk1": {
+"id": 89,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Stellsignal Rk1 (HR40107)"
+},
+"EBNBetrArtRk2": {
+"id": 90,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Betriebsart Rk2 (HR40108)"
+},
+"EBNStellsigRk2": {
+"id": 91,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Stellsignal Rk2 (HR40109)"
+},
+"EBNBetrArtTW": {
+"id": 94,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Betriebsart TW (HR40112)"
+},
+"EBNBinaerBA1": {
+"id": 95,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Umwaelzpumpe Rk1 (UP1, Netzseite, CL57)"
+},
+"EBNBinaerBA2": {
+"id": 96,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Umwaelzpumpe Rk2 (UP2, Netzseite, CL58)"
+},
+"EBNBinaerBA4": {
+"id": 98,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Speicherladepumpe TW (SLP, CL60)"
+},
+"EBNBinaerBA5": {
+"id": 99,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Zirkulationspumpe (ZP, CL61)"
+},
+"EBNBinaerBA6": {
+"id": 100,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Binaer BA6"
+},
+"EBNBinaerBA7": {
+"id": 101,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Rk12-Pkt-Signal (CL63)"
+},
+"EBNBinaerBA8": {
+"id": 102,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Binaer BA8"
+},
+"EBNBinaerBA9": {
+"id": 103,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Rk22-Pkt-Signal (CL65)"
+},
+"EBNBinaerBA12": {
+"id": 106,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Pumpenmanagement UP1 Ein/Aus (CL68)"
+},
+"EBNBinaerBA13": {
+"id": 107,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Pumpenmanagement Drehzahl UP1(CL69)"
+},
+"EBNAA1": {
+"id": 108,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Analogausgang 1 (0..10V)"
+},
+"EBNAA2": {
+"id": 109,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Analogausgang 2 (0..10V)"
+},
+"EBNSonTWSollw": {
+"id": 111,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Sonder-Trinkwassersollwert (HR41809)"
+},
+"EBNSonPuffSollw": {
+"id": 112,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Sonder-Pufferspeichersollwert (HR41045)"
+},
+"EBNVorlSollRk1": {
+"id": 115,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Vorlaufsollwert Rk1 (HR41000)"
+},
+"EBNRueckSollRk1": {
+"id": 116,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Ruecklaufsollwert Rk1 (HR41033)"
+},
+"EBNVorlSollRk2": {
+"id": 117,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Vorlaufsollwert Rk2 (HR41200)"
+},
+"EBNRueckSollRk2": {
+"id": 118,
+"art": "rw",
+"typ": "Liste_FA",
+"unit": "",
+"name": "Ebene Ruecklaufsollwert Rk2 (HR41233)"
+},
+"FB01Pt1000": {
+"id": 129,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: Pt1000- (Pt100)- Fuehler"
+},
+"FB02NTC": {
+"id": 130,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: NTC- (Pt100)- Fuehler"
+},
+"FB03Pt500": {
+"id": 131,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: Pt500- (Pt100)- Fuehler"
+},
+"FB04Sommerbtr": {
+"id": 132,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB04: Sommerbetrieb"
+},
+"FB05VerzATAnp": {
+"id": 133,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB05: Verzoegerte Aussentemperaturanpassung fallend"
+},
+"FB06VerzATAnp": {
+"id": 134,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB06: Verzoegerte Aussentemperaturanpassung steigend"
+},
+"FB07Stoerausgang": {
+"id": 135,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB07: Stoermeldeausgang BA13"
+},
+"FB08AutSommZeit": {
+"id": 136,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB08: Automatische Sommer-/Winterzeitumschaltung"
+},
+"FB09Frostschutz": {
+"id": 137,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB09: Frostschutzprogramm (I=>FB09=0, II=>FB09=1)"
+},
+"FB10LeistBeg": {
+"id": 138,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB10: Durchfluss-/Leistungsbegrenzung mit Impulsen"
+},
+"FB11DflussBegmA": {
+"id": 139,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: Durchflussbegrenzung mit 0/4..20mA-Signal"
+},
+"FB12Schleichmng": {
+"id": 140,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB12: Schleichmengenunterdrueckung per BE13"
+},
+"FB13LeistBegmA": {
+"id": 141,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB13: Leistungsbegr. bas. Volumenstr. 0/4-20mA Rk1"
+},
+"FB14BetrUP1": {
+"id": 142,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "FB14: Betrieb UP1 bei Eigenbedarf"
+},
+"FB15FrgRegBE15": {
+"id": 143,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "FB15: Freigabe Regler an BE15 (Stdby-Betr. bE/1,0)"
+},
+"FB16Ruecklbegr": {
+"id": 144,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB16: P-Verhalten bei Ruecklauftemperaturbegrenzung"
+},
+"FB17UPManagmt": {
+"id": 145,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB17: Pumpenmanagement Schaltverh. BA13 (ab V1.30)"
+},
+"FB19Tempueberw": {
+"id": 147,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB19: Temperaturueberwachung"
+},
+"FB21SperrHand": {
+"id": 149,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB21: Sperrung der Handebenen"
+},
+"FB22SperrDreh": {
+"id": 150,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB22: Sperrung der Drehschalter"
+},
+"FB23AT0bis10V": {
+"id": 151,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB23: Aussentemperatur mittels 0 bis 10V erfassen"
+},
+"FB01Modbus": {
+"id": 152,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: Modbusbetrieb"
+},
+"FB0216bit": {
+"id": 153,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: Modbus 16-bit-Adressierung"
+},
+"FB03Modem": {
+"id": 154,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: Modemfunktion"
+},
+"FB04AutoModem": {
+"id": 155,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB04: Automatische Modemkonfiguration"
+},
+"FB05SperrModem": {
+"id": 156,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB05: Sperrung der GLT-Anwahl"
+},
+"FB06Anwgehend": {
+"id": 157,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB06: GLT-Anwahl auch bei gehenden Stoerungen"
+},
+"FB07TimeoutGLT": {
+"id": 158,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB07: Leitsystemueberwachung"
+},
+"FB08SMS": {
+"id": 159,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB08: SMS-Betrieb"
+},
+"FB10Zaehlerbus": {
+"id": 161,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB10: Zaehlerbus-Betrieb"
+},
+"FB11DflussBeg": {
+"id": 162,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: Durchflussbegrenzung in Rk1 mittels Zaehlerbus"
+},
+"FB12LeistBeg": {
+"id": 163,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB12: Leistungsbegrenzung in Rk1 mittels Zaehlerbus"
+},
+"FB01Geraetebus": {
+"id": 175,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: Geraetebus"
+},
+"FB02Uhrzeitsync": {
+"id": 176,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: Uhrzeitsynchronisation"
+},
+"FB03RaumleitRk1": {
+"id": 177,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: Raumleitgeraet TROVIS 5570 in Rk1"
+},
+"FB04RaumleitRk2": {
+"id": 178,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB04: Raumleitgeraet TROVIS 5570 in Rk2"
+},
+"FB06SendenAF1": {
+"id": 180,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB06: Wert AF1 senden"
+},
+"FB07EmpfangAF1": {
+"id": 181,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB07: Wert AF1 empfangen"
+},
+"FB08SendenAF2": {
+"id": 182,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB08: Wert AF2 senden"
+},
+"FB09EmpfangAF2": {
+"id": 183,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB09: Wert AF2 empfangen"
+},
+"FB10SendSollRk1": {
+"id": 184,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB10: Vorlaufsollwert Rk1 senden"
+},
+"FB11SendSollRk2": {
+"id": 185,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: Vorlaufsollwert Rk2 senden"
+},
+"FB13SendSollTW": {
+"id": 187,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB13: Vorlaufsollwert TW senden"
+},
+"FB14SendSollMax": {
+"id": 188,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB14: Maximalen Vorlaufsollwert senden"
+},
+"FB15EmpfangBed": {
+"id": 189,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB15: Bedarf empfangen"
+},
+"FB16Stoermeldung": {
+"id": 190,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB16: Stoermeldungen via Geraetebus"
+},
+"FB19AnhRueckGW": {
+"id": 193,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB19: Anhebung Ruecklauftemperaturgrenzwert"
+},
+"FB20SendTW": {
+"id": 194,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB20: Trinkwassererwaermumg aktiv senden"
+},
+"FB21FrgRk1Empf": {
+"id": 195,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Freigabe Rk1 empfangen"
+},
+"FB22FRgRk2Empf": {
+"id": 196,
+"art": "rw",
+"typ": "Liste_AE",
+"unit": "",
+"name": "Freigabe Rk2 empfangen"
+},
+"FB01BE01": {
+"id": 198,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB02BE02": {
+"id": 199,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB03BE03": {
+"id": 200,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB04BE04": {
+"id": 201,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB04: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB05BE05": {
+"id": 202,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB05: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB06BE06": {
+"id": 203,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB06: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB09BE09": {
+"id": 206,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB09: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB10BE10": {
+"id": 207,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB10: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB11BE11": {
+"id": 208,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB12BE12": {
+"id": 209,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB12: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB13BE13": {
+"id": 210,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB13: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB15BE15": {
+"id": 211,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB15: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB16BE16": {
+"id": 212,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB16: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"FB17BE17": {
+"id": 213,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB17: 1=>Binaereingang/ 0=Sensoreingang"
+},
+"MeldungBE01": {
+"id": 221,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE02": {
+"id": 222,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE03": {
+"id": 223,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE04": {
+"id": 224,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE05": {
+"id": 225,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE06": {
+"id": 226,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE09": {
+"id": 229,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE10": {
+"id": 230,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE11": {
+"id": 231,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE12": {
+"id": 232,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE13": {
+"id": 233,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE15": {
+"id": 235,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE16": {
+"id": 236,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"MeldungBE17": {
+"id": 237,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "1=>Meldung bei BE=1/ 0=>Meldung bei BE=0"
+},
+"WMZHTNT-Tarif": {
+"id": 244,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "WMZ-Tarifumschaltung HT/NT fuer WMZ #1"
+},
+"WMZKomStoer#4": {
+"id": 245,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Kommunikationsstoerung Zaehlerbus WMZ #4 (CO6, Fb10)"
+},
+"WMZKomStoer#5": {
+"id": 246,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Kommunikationsstoerung Zaehlerbus WMZ #5 (CO6, Fb10)"
+},
+"WMZKomStoer#6": {
+"id": 247,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Kommunikationsstoerung Zaehlerbus WMZ #6 (CO6, Fb10)"
+},
+"WMZFehlerWMZ#4": {
+"id": 248,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Fehler WMZ #4 (CO6, Fb10)"
+},
+"WMZFehlerWMZ#5": {
+"id": 249,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Fehler WMZ #5 (CO6, Fb10)"
+},
+"WMZFehlerWMZ#6": {
+"id": 250,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Fehler WMZ #6 (CO6, Fb10)"
+},
+"WMZ-Auslesung#4": {
+"id": 251,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "1 = 1xAuslesung WMZ #4 veranlassen"
+},
+"WMZ-Auslesung#5": {
+"id": 252,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "1 = 1xAuslesung WMZ #5 veranlassen"
+},
+"WMZ-Auslesung#6": {
+"id": 253,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "1 = 1xAuslesung WMZ #6 veranlassen"
+},
+"SummenBegrenzung": {
+"id": 254,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Summenbegrenzung Leistung/Durchfluss aller WMZs"
+},
+"CO9FB05": {
+"id": 300,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "Externe Vorlaufsoll-Korrektur (Techem/Adapterm)"
+},
+"CO9FB01": {
+"id": 301,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "NI1000 Sensoren der Firma SIEMENS"
+},
+"ZyklRelaisinit": {
+"id": 302,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "Zyklische Relaisinitialisierung"
+},
+"Fliessdruckschalt": {
+"id": 303,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "Fliessdruckschalter"
+},
+"WirksinnStoeraus": {
+"id": 304,
+"art": "rw",
+"typ": "Liste_FS",
+"unit": "",
+"name": "Wirksinn Stoermeldeausgang BA13 (CO5, Fb07)"
+},
+"Schleichmbin": {
+"id": 306,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "Schleichmenge mittels Binaereingang"
+},
+"CO9FB08": {
+"id": 307,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "RK1 als Zubringerkreis"
+},
+"CO9FB09": {
+"id": 308,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "Modbus-Schreibfreigabe"
+},
+"FB01BE01imFSR": {
+"id": 321,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: 1=> Meldung in Fehlerstatusregister"
+},
+"FB02BE02imFSR": {
+"id": 322,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: 1=> Meldung in Fehlerstatusregister"
+},
+"FB03BE03imFSR": {
+"id": 323,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: 1=> Meldung in Fehlerstatusregister"
+},
+"FB04BE04imFSR": {
+"id": 324,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB04: 1=> Meldung in Fehlerstatusregister"
+},
+"FB05BE05imFSR": {
+"id": 325,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB05: 1=> Meldung in Fehlerstatusregister"
+},
+"FB06BE06imFSR": {
+"id": 326,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB06: 1=> Meldung in Fehlerstatusregister"
+},
+"FB09BE09imFSR": {
+"id": 329,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB09: 1=> Meldung in Fehlerstatusregister"
+},
+"FB10BE10imFSR": {
+"id": 330,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB10: 1=> Meldung in Fehlerstatusregister"
+},
+"FB11BE11imFSR": {
+"id": 331,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: 1=> Meldung in Fehlerstatusregister"
+},
+"FB12BE12imFSR": {
+"id": 332,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB12: 1=> Meldung in Fehlerstatusregister"
+},
+"FB13BE13imFSR": {
+"id": 333,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB13: 1=> Meldung in Fehlerstatusregister"
+},
+"FB15BE15imFSR": {
+"id": 335,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB15: 1=> Meldung in Fehlerstatusregister"
+},
+"FB16BE16imFSR": {
+"id": 336,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB16: 1=> Meldung in Fehlerstatusregister"
+},
+"FB17BE17imFSR": {
+"id": 337,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB17: 1=> Meldung in Fehlerstatusregister"
+},
+"BtrnichtAuto": {
+"id": 997,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "mind. 1 Rk ungleich Auto"
+},
+"BtrSnichtAuto": {
+"id": 998,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "mind. 1 Rk ungleich Auto mittels Betriebsschalter"
+},
+"AutoRk1": {
+"id": 999,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Zeitabhaengiger Betrieb Rk1"
+},
+"TagbetriebRk1": {
+"id": 1000,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Tagbetrieb Rk1"
+},
+"NachtbetriebRk1": {
+"id": 1001,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Nachtbetrieb Rk1"
+},
+"HaltebtrRk1": {
+"id": 1002,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Haltebetrieb Rk1 (mit CO1, Fb07=1)"
+},
+"StuetzbtrRk1": {
+"id": 1003,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Stuetzbetrieb Rk1 (mit CO1, Fb07=1)"
+},
+"AufheizbtrRk1": {
+"id": 1004,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Aufheizbetrieb Rk1 (mit CO1, Fb07=1)"
+},
+"RuecklbegRk1": {
+"id": 1005,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Ruecklauftemperaturbegrenzung Rk1 aktiv"
+},
+"HeizausRk1": {
+"id": 1006,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "AT-abhaengige Heizungsabschaltung Rk1 aktiv"
+},
+"StandbyRk1": {
+"id": 1007,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Standby-Betrieb Rk1"
+},
+"FrostschutzRk1": {
+"id": 1008,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Frostschutzbetrieb Rk1"
+},
+"FB01RF1": {
+"id": 1024,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: Raumfuehler RF1"
+},
+"FB02AF1": {
+"id": 1025,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: Aussenfuehler AF1"
+},
+"FB03RueF1Rk1": {
+"id": 1026,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: Ruecklauffuehler RueF1 Rk1"
+},
+"FB05FBHRk1": {
+"id": 1028,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB05: Fussbodenheizung Rk1"
+},
+"FB07OptimierRk1": {
+"id": 1030,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB07: Optimierung Rk1"
+},
+"FB08AdaptRk1": {
+"id": 1031,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB08: Adaption Rk1"
+},
+"FB09KurzztAdRk1": {
+"id": 1032,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB09: Kurzzeitadaption Rk1"
+},
+"FB10UPManagmt": {
+"id": 1033,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB10: Pumpenmanagement Schaltverh BA13 (bis V1.30)"
+},
+"FB114PHKLRk1": {
+"id": 1034,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: 4-Punkte-Kennlinie Rk1"
+},
+"FB123PktRegRk1": {
+"id": 1035,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB12: Regelungsart 3-Pkt (Rk1) / 0...10V (Y1)"
+},
+"FB13BegxdRk1": {
+"id": 1036,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB13: Begrenzung d. Regelabweichung AUF-Signal Rk1"
+},
+"FB14FreigRk1": {
+"id": 1037,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB14: Freigabe Rk1 an Eingang BE15"
+},
+"FB15Bedarf": {
+"id": 1038,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB15: Bedarfsverarbeitung in Rk1"
+},
+"FB1610VBedarf": {
+"id": 1039,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB16: Bedarfsverarbeitung 0-10V in Rk1 (Kl. 17/19)"
+},
+"FB17binBedarf": {
+"id": 1040,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB17: Bedarfsverarbeitung binaer in Rk1 (Kl. 17/18)"
+},
+"FB18maxVL-Soll": {
+"id": 1041,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB18: Max. Vorlaufsollwert mittels 0-10V anfordern"
+},
+"FB19VL-SollFolg": {
+"id": 1042,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB19: Max. Vorlaufsollwert in Folge anfordern"
+},
+"FB20ExtWaermean": {
+"id": 1043,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB20: Externe Waermeanforderung bei Unterversorgung"
+},
+"AutoRk2": {
+"id": 1199,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Zeitabhaengiger Betrieb Rk2"
+},
+"TagbetriebRk2": {
+"id": 1200,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Tagbetrieb Rk2"
+},
+"NachtbetriebRk2": {
+"id": 1201,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Nachtbetrieb Rk2"
+},
+"HaltebtrRk2": {
+"id": 1202,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Haltebetrieb Rk2 (mit CO2, Fb07=1)"
+},
+"StuetzbtrRk2": {
+"id": 1203,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Stuetzbetrieb Rk2 (mit CO2, Fb07=1)"
+},
+"AufheizbtrRk2": {
+"id": 1204,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Aufheizbetrieb Rk2 (mit CO2, Fb07=1)"
+},
+"RuecklbegRk2": {
+"id": 1205,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Ruecklauftemperaturbegrenzung Rk2 aktiv"
+},
+"HeizausRk2": {
+"id": 1206,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "AT-abhaengige Heizungsabschaltung Rk2 aktiv"
+},
+"StandbyRk2": {
+"id": 1207,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Standby-Betrieb Rk2"
+},
+"FrostschutzRk2": {
+"id": 1208,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Frostschutzbetrieb Rk2"
+},
+"FB01RF2": {
+"id": 1224,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: Raumfuehler RF2"
+},
+"FB02AF2": {
+"id": 1225,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: Aussenfuehler AF2"
+},
+"FB03RueF2Rk2": {
+"id": 1226,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: Ruecklauffuehler RueF2 Rk2"
+},
+"FB05FBHRk2": {
+"id": 1227,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB05: Fussbodenheizung Rk2"
+},
+"FB07OptimierRk2": {
+"id": 1230,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB07: Optimierung Rk2"
+},
+"FB08AdaptRk2": {
+"id": 1231,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB08: Adaption Rk2"
+},
+"FB09KurzztAdRk2": {
+"id": 1232,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB09: Kurzzeitadaption Rk2"
+},
+"FB114PHKLRk2": {
+"id": 1234,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: 4-Punkte-Kennlinie Rk2"
+},
+"FB123PktRegRk2": {
+"id": 1235,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB12: Regelungsart 3-Pkt (Rk2) / 0...10V (Y2)"
+},
+"FB13BegxdRk2": {
+"id": 1236,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB13: Begrenzung d. Regelabweichung AUF-Signal Rk2"
+},
+"FB14FreigRk2": {
+"id": 1237,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB14: Freigabe Rk2 an Eingang BE16"
+},
+"AutoTW": {
+"id": 1799,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Zeitabhaengiger Betrieb Trinkwasser"
+},
+"ThermDesTW": {
+"id": 1800,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Thermische Desinfektion Trinkwasserkreis aktiv"
+},
+"VorrangTW": {
+"id": 1801,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Vorrangbetrieb Trinkwasserkreis aktiv"
+},
+"MaxLadetempbgTW": {
+"id": 1802,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Maximale Ladetemperaturbegrenzung aktiv"
+},
+"RuecklbegTW": {
+"id": 1803,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Ruecklauftemperaturbegr. Trinkwasserkreis aktiv"
+},
+"StandbyTW": {
+"id": 1804,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Standby-Betrieb Trinkwasser"
+},
+"FrostschutzTW": {
+"id": 1805,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Frostschutzbetrieb Trinkwasser"
+},
+"ZwangsladTW": {
+"id": 1806,
+"art": "rw",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Zwangsladung Trinkwasserspeicher"
+},
+"SolarUPTW": {
+"id": 1807,
+"art": "ro",
+"typ": "Liste_NJ",
+"unit": "",
+"name": "Solarkreis-Umwaelzpumpe aktiv"
+},
+"SF2anstattSF1": {
+"id": 1808,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "Zwangsladung durch Umschaltung von SF1 auf SF2"
+},
+"FB01SF1": {
+"id": 1824,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB01: Speicherfuehler SF1"
+},
+"FB02SF2": {
+"id": 1825,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB02: Speicherfuehler SF2"
+},
+"FB03RueF2": {
+"id": 1826,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB03: Ruecklauffuehler RueF2"
+},
+"FB04StroemSensor": {
+"id": 1827,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB04: Wasserstroemungssensor"
+},
+"FB05VF4": {
+"id": 1828,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB05: Vorlauffuehler VF4"
+},
+"FB06ParallelTW": {
+"id": 1829,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB06: Pumpenparallellauf"
+},
+"FB07Zwischenhzg": {
+"id": 1830,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB07: Zwischenheizbetrieb"
+},
+"FB08VorrangInv": {
+"id": 1831,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB08: Vorrang durch Inversbetrieb"
+},
+"FB09VorrangAbs": {
+"id": 1832,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB09: Vorrang durch Absenkbetrieb"
+},
+"FB10ZPinWT": {
+"id": 1833,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB10: ZP in Waermetauscher eingebunden"
+},
+"FB11ZPbeimLaden": {
+"id": 1834,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB11: Betrieb der ZP bei Speicherladung"
+},
+"FB123PktRegTW": {
+"id": 1835,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB12: Regelungsart 3-Pkt (Rk2) / 0...10V (Y2) TW"
+},
+"FB13BegRegdiff": {
+"id": 1836,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB13: Begrenzung der Regelabweichung AUF-Signal TW"
+},
+"FB14ThermDes": {
+"id": 1837,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB14: Thermische Desinfektion"
+},
+"FB15SLPabhRueF": {
+"id": 1838,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB15: SLP ein in Abhaengigkeit der Ruecklauftemp"
+},
+"FB16BedPrio": {
+"id": 1839,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB16: Externer Bedarf hat Prioritaet"
+},
+"FB17BA12Desinf": {
+"id": 1840,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB17: BA12 waehrend thermischer Desinfektion ein"
+},
+"FB18BA12TWAnf": {
+"id": 1841,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB18: BA12 waehrend Trinkwasseranforderung ein"
+},
+"FB19ZPSFumsch": {
+"id": 1842,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB19: Zeitprogrammgest. Speicherfuehlerumschaltung"
+},
+"FB20Durchgngreg": {
+"id": 1843,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB20: TW-Kreis nachgeregelt mit Durchgangsventil"
+},
+"FB21DrehzLadep": {
+"id": 1844,
+"art": "rw",
+"typ": "Liste_IA",
+"unit": "",
+"name": "FB21: Drehzahlregelung der Ladepumpe"
+}
+}
+}

@@ -19,38 +19,48 @@ from trovis_modbus import Trovis557x
 
 UNIT_ID = 1
 
-# Raw register words keyed by address (see test_device.py for the decoded view).
+# Raw register words keyed by address (decoded view documented inline).
 HOLDING: dict[int, int] = {
     0: 5579,  # model
-    1: 21,  # Anlage -> 2.1
+    1: 21,  # system -> 2.1
     2: 305,  # firmware -> 3.05
-    9: 123,  # AF1 -> 12.3 °C
-    12: 0x10000 - 50,  # VF1 -> -5.0 °C (int16 negative)
-    22: 450,  # SF1 -> 45.0 °C
-    23: 32767,  # SF2 -> NaN sentinel -> None
+    3: 110,  # hardware -> 1.10
+    5: 12345,  # serial
+    9: 123,  # outside_1 -> 12.3
+    12: 0x10000 - 50,  # flow_1 -> -5.0 (signed)
+    22: 450,  # storage_1 -> 45.0
+    23: 0x7FFF,  # storage_2 -> NaN -> None
+    98: 900,  # max flow setpoint -> 90.0
     99: 1430,  # time -> 14:30
     100: 2106,  # date -> 21.06
     101: 2026,  # year
-    102: 1,  # switch top -> Auto
-    105: 1,  # hk1 Betriebsart -> Auto
-    112: 1505,  # summer-on date -> 15.05
-    1000: 800,  # hk1 vl_max -> 80.0
-    1001: 200,  # hk1 vl_min -> 20.0
-    1002: 200,  # hk1 raumsoll_tag -> 20.0
-    1003: 150,  # hk1 raumsoll_nacht -> 15.0
-    1005: 10,  # hk1 steigung -> 1.0
-    1006: 0,  # hk1 niveau -> 0.0
-    1799: 500,  # hk4 soll -> 50.0
-    1802: 100,  # hk4 schaltdifferenz -> 10.0
-    1803: 220,  # hk4 ueberhoehung -> 22.0
-    1806: 480,  # hk4 haltewert -> 48.0
-    1830: 3,  # disinfection weekday -> Mi
+    102: 1,  # switch_top -> AUTOMATIC
+    105: 1,  # hc1 mode -> AUTOMATIC
+    106: 42,  # hc1 control signal -> 42 %
+    112: 1505,  # summer start -> 15.05
+    149: 0,  # error status
+    999: 550,  # hc1 flow_setpoint -> 55.0
+    1000: 800,  # hc1 flow_max -> 80.0
+    1001: 200,  # hc1 flow_min -> 20.0
+    1002: 210,  # hc1 room_setpoint_day -> 21.0
+    1003: 180,  # hc1 room_setpoint_night -> 18.0
+    1004: 210,  # hc1 room_setpoint_active -> 21.0
+    1005: 12,  # hc1 slope -> 1.2
+    1006: 0,  # hc1 level -> 0.0
+    1199: 480,  # hc2 flow_setpoint -> 48.0
+    1799: 500,  # hot_water setpoint_day -> 50.0
+    1807: 500,  # hot_water setpoint_active -> 50.0
+    1837: 670,  # hot_water active_charge_setpoint -> 67.0
+    1830: 3,  # disinfection weekday -> WEDNESDAY
     1831: 1900,  # disinfection start -> 19:00
 }
 
 COILS: dict[int, bool] = {
-    56: True,  # hk1 circulation pump
-    1000: True,  # hk1 day mode (drives heating-curve soll selection)
+    56: True,  # hc1 pump
+    999: True,  # hc1 automatic
+    1000: True,  # hc1 day active
+    1799: True,  # hot_water automatic
+    59: True,  # hot_water charge pump
 }
 
 
@@ -89,9 +99,8 @@ async def trovis() -> AsyncIterator[Trovis557x]:
         break
 
     conn = await connect_tcp(host, port=port)
-    device_api = Trovis557x(conn.for_unit(UNIT_ID))
     try:
-        yield device_api
+        yield Trovis557x(conn.for_unit(UNIT_ID))
     finally:
         await conn.close()
         await server.shutdown()
