@@ -27,9 +27,10 @@ HOLDING: dict[int, int] = {
     3: 110,  # hardware -> 1.10
     5: 12345,  # serial
     9: 123,  # outside_1 -> 12.3
-    12: 0x10000 - 50,  # flow_1 -> -5.0 (signed)
-    22: 450,  # storage_1 -> 45.0
-    23: 0x7FFF,  # storage_2 -> NaN -> None
+    12: 0x10000 - 50,  # hc1 flow_temperature (VF1) -> -5.0 (signed)
+    19: 200,  # hc1 room_temperature (RF1) -> 20.0
+    22: 450,  # hot_water storage_temperature (SF1) -> 45.0
+    23: 0x7FFF,  # hot_water storage_temperature_lower (SF2) -> NaN -> None
     98: 900,  # max flow setpoint -> 90.0
     99: 1430,  # time -> 14:30
     100: 2106,  # date -> 21.06

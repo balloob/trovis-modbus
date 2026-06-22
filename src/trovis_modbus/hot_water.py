@@ -18,6 +18,9 @@ from .enums import OperatingMode
 class HotWater(Component):
     """Domestic hot water: setpoints, charging and thermal disinfection."""
 
+    storage_temperature = temperature(22, doc="Storage temperature (SF1)")
+    storage_temperature_lower = temperature(23, doc="Lower storage temperature (SF2)")
+
     mode = operating_mode(111, writable=True, level_coil=94, doc="Operating mode")
     setpoint_day = temperature(1799, writable=True, doc="Hot-water setpoint (day)")
     setpoint_active = temperature(1807, doc="Currently active hot-water setpoint")

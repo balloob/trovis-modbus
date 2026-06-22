@@ -14,6 +14,12 @@ class HeatingCircuit(Component):
     200 per circuit, mode/control-signal by 2, pumps/manual status by 1.
     """
 
+    # Measured temperatures, by the conventional per-circuit sensor wiring
+    # (VF/RüF/RF input N feeds circuit N).
+    flow_temperature = temperature(12, stride=1, doc="Flow temperature (VF)")
+    return_temperature = temperature(16, stride=1, doc="Return temperature (RüF)")
+    room_temperature = temperature(19, stride=1, doc="Room temperature (RF)")
+
     mode = operating_mode(
         105,
         stride=2,

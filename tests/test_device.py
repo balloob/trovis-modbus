@@ -21,9 +21,11 @@ async def test_device_info(trovis: Trovis557x) -> None:
 async def test_sensors(trovis: Trovis557x) -> None:
     await trovis.async_update()
     assert trovis.sensors.outside_1 == pytest.approx(12.3)
-    assert trovis.sensors.flow_1 == pytest.approx(-5.0)  # signed
-    assert trovis.sensors.storage_1 == pytest.approx(45.0)
-    assert trovis.sensors.storage_2 is None  # NaN sentinel
+    # Per-circuit / storage sensors live on their components now.
+    assert trovis.heating_circuit_1.flow_temperature == pytest.approx(-5.0)  # signed
+    assert trovis.heating_circuit_1.room_temperature == pytest.approx(20.0)
+    assert trovis.hot_water.storage_temperature == pytest.approx(45.0)
+    assert trovis.hot_water.storage_temperature_lower is None  # NaN sentinel
 
 
 async def test_clock(trovis: Trovis557x) -> None:
