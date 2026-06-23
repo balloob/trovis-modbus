@@ -1,4 +1,4 @@
-"""End-to-end tests of the object model over a real Modbus server."""
+"""End-to-end tests of the object model over the in-memory mock backend."""
 
 from __future__ import annotations
 

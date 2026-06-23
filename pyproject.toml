@@ -17,11 +17,13 @@ classifiers = [
 ]
 # Protocol only — no Modbus backend is hard-depended on. The caller injects a
 # ModbusUnit built from whichever backend they choose.
-dependencies = ["modbus-connection>=0.1"]
+dependencies = ["modbus-connection>=1.0,<2"]
 
 [project.urls]
 Homepage = "https://github.com/balloob/trovis-modbus"
 
+# Until modbus-connection 1.0.0 is published to PyPI, resolve it from the sibling
+# checkout. Drop this block once it is on PyPI.
 [tool.uv.sources]
 modbus-connection = { path = "../modbus-connection", editable = true }
 
@@ -29,9 +31,9 @@ modbus-connection = { path = "../modbus-connection", editable = true }
 dev = [
     "pytest>=8",
     "pytest-asyncio>=0.24",
-    "pyyaml>=6",
-    # A concrete backend + a server, to exercise the library end-to-end.
-    "modbus-connection[pymodbus]",
+    # Tests run against the in-memory mock backend that ships with
+    # modbus-connection (its pytest plugin is auto-registered); no real backend
+    # or server is needed.
 ]
 
 [tool.hatch.build.targets.wheel]

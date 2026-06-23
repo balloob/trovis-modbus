@@ -1,25 +1,19 @@
-"""Fixtures: a real Modbus TCP server preloaded with Trovis-shaped values."""
+"""Fixtures: a Trovis557x over modbus-connection's in-memory mock backend.
+
+The mock backend (and its ``mock_modbus_unit`` fixture) ship with
+``modbus-connection`` as an auto-registered pytest plugin, so there is no real
+server, socket, or backend here — just an address-keyed store the test loads
+with Trovis-shaped register/coil values.
+"""
 
 from __future__ import annotations
 
-import asyncio
-import socket
-from collections.abc import AsyncIterator
-
 import pytest
-from modbus_connection.pymodbus import connect_tcp
-from pymodbus.datastore import (
-    ModbusDeviceContext,
-    ModbusSequentialDataBlock,
-    ModbusServerContext,
-)
-from pymodbus.server import ModbusTcpServer
+from modbus_connection.mock import MockModbusUnit
 
 from trovis_modbus import Trovis557x
 
-UNIT_ID = 1
-
-# Raw register words keyed by address (decoded view documented inline).
+# Raw register words keyed by their (protocol) address; decoded view inline.
 HOLDING: dict[int, int] = {
     0: 5579,  # model
     1: 21,  # system -> 2.1
@@ -65,48 +59,9 @@ COILS: dict[int, bool] = {
 }
 
 
-def _block(
-    mapping: dict[int, int | bool], size: int = 2100
-) -> ModbusSequentialDataBlock:
-    values = [0] * (size + 1)
-    for address, value in mapping.items():
-        values[address + 1] = int(value)  # pymodbus datastore is 1-based
-    return ModbusSequentialDataBlock(0, values)
-
-
-def _free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        sock.bind(("127.0.0.1", 0))
-        return sock.getsockname()[1]
-
-
 @pytest.fixture
-async def trovis() -> AsyncIterator[Trovis557x]:
-    device = ModbusDeviceContext(
-        co=_block(COILS), hr=_block(HOLDING), di=_block({}), ir=_block({})
-    )
-    context = ModbusServerContext(devices={UNIT_ID: device}, single=False)
-    host, port = "127.0.0.1", _free_port()
-    server = ModbusTcpServer(context, address=(host, port))
-    task = asyncio.create_task(server.serve_forever())
-    for _ in range(100):
-        try:
-            _, writer = await asyncio.open_connection(host, port)
-        except OSError:
-            await asyncio.sleep(0.02)
-            continue
-        writer.close()
-        await writer.wait_closed()
-        break
-
-    conn = await connect_tcp(host, port=port)
-    try:
-        yield Trovis557x(conn.for_unit(UNIT_ID))
-    finally:
-        await conn.close()
-        await server.shutdown()
-        task.cancel()
-        try:
-            await task
-        except (asyncio.CancelledError, Exception):
-            pass
+def trovis(mock_modbus_unit: MockModbusUnit) -> Trovis557x:
+    """A Trovis557x over the mock unit, preloaded with device values."""
+    mock_modbus_unit.holding.update(HOLDING)
+    mock_modbus_unit.coils.update(COILS)
+    return Trovis557x(mock_modbus_unit)

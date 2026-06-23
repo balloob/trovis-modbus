@@ -78,8 +78,9 @@ uv run pytest
 ```
 
 The suite cross-checks every field against the canonical point list and
-exercises decoding, the heating curve, writes and listeners against a real
-in-process Modbus server.
+exercises decoding, the heating curve, writes and listeners against the
+in-memory mock backend that ships with `modbus-connection` (its `mock_modbus_unit`
+pytest fixture) — no real Modbus server or backend is needed.
 
 Formatting/linting is [ruff](https://docs.astral.sh/ruff/); install the commit
 hook with [prek](https://github.com/j178/prek):
