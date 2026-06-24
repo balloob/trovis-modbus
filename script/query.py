@@ -18,9 +18,11 @@ import argparse
 import asyncio
 import inspect
 import sys
+import time
 from enum import IntEnum
+from typing import cast
 
-from modbus_connection import ModbusConnection, ModbusError
+from modbus_connection import ModbusConnection, ModbusError, ModbusUnit
 from modbus_connection.model import Component, RegisterField
 
 from trovis_modbus import MonthDay, Trovis557x
@@ -93,6 +95,33 @@ async def _open(args: argparse.Namespace) -> ModbusConnection:
     return await connect_tcp(args.host, port=args.port, framer=args.framer)
 
 
+class _CountingUnit:
+    """Wraps a ModbusUnit to count the Modbus reads it performs."""
+
+    def __init__(self, unit: ModbusUnit) -> None:
+        self._unit = unit
+        self.reads = 0
+
+    async def read_input_registers(self, address: int, count: int) -> list[int]:
+        self.reads += 1
+        return await self._unit.read_input_registers(address, count)
+
+    async def read_holding_registers(self, address: int, count: int) -> list[int]:
+        self.reads += 1
+        return await self._unit.read_holding_registers(address, count)
+
+    async def read_coils(self, address: int, count: int) -> list[bool]:
+        self.reads += 1
+        return await self._unit.read_coils(address, count)
+
+    async def read_discrete_inputs(self, address: int, count: int) -> list[bool]:
+        self.reads += 1
+        return await self._unit.read_discrete_inputs(address, count)
+
+    def __getattr__(self, name: str) -> object:
+        return getattr(self._unit, name)
+
+
 def _format(value: object) -> str:
     if value is None:
         return "—"
@@ -141,15 +170,19 @@ async def _run(args: argparse.Namespace) -> int:
     except ModbusError as err:
         print(f"Could not connect: {err}", file=sys.stderr)
         return 1
+    counting = _CountingUnit(connection.for_unit(args.unit))
     try:
-        device = Trovis557x(connection.for_unit(args.unit))
+        device = Trovis557x(cast(ModbusUnit, counting))
+        start = time.monotonic()
         await device.async_update()
+        elapsed = time.monotonic() - start
     except ModbusError as err:
         print(f"Error reading device: {err}", file=sys.stderr)
         return 1
     finally:
         await connection.close()
     _print(device)
+    print(f"\nQueried in {elapsed * 1000:.0f} ms ({counting.reads} Modbus reads)")
     return 0
 
 
