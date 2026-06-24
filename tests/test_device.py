@@ -111,7 +111,7 @@ async def test_hot_water(trovis: Trovis557x) -> None:
     assert hw.disinfection_weekday is Weekday.WEDNESDAY
     assert hw.disinfection_start == time(19, 0)
     assert hw.automatic is True
-    assert hw.charging is True  # charge pump running
+    assert hw.charge_pump_running is True
 
 
 async def test_independent_component_update(trovis: Trovis557x) -> None:

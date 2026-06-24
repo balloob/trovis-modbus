@@ -6,7 +6,7 @@ objects::
 
     device.sensors.outside_1
     device.heating_circuit_1.room_setpoint_active
-    device.hot_water.charging
+    device.hot_water.charge_pump_running
 
 The library is organized by sub-system — one file each for ``device_info``,
 ``controller``, ``clock``, ``sensors``, ``heating_circuit`` and ``hot_water`` —

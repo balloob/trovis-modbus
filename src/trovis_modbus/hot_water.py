@@ -57,11 +57,6 @@ class HotWater(TrovisComponent):
         """End time of the thermal-disinfection window."""
         return time_from_hhmm(self._disinfection_stop_raw)
 
-    @property
-    def charging(self) -> bool | None:
-        """Whether the storage is currently being charged (charge pump on)."""
-        return self.charge_pump_running
-
     async def set_setpoint(self, celsius: float) -> None:
         """Set the hot-water day setpoint (°C)."""
         await self.write("setpoint_day", celsius)

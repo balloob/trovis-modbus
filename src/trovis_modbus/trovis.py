@@ -27,7 +27,7 @@ class Trovis557x:
         trovis.sensors.outside_1                 # °C
         trovis.heating_circuit_1.room_setpoint_active
         trovis.heating_circuit_1.pump_running    # bool
-        trovis.hot_water.charging
+        trovis.hot_water.charge_pump_running
         trovis.info.model
 
     Each sub-system can also be refreshed on its own (``await

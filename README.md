@@ -49,7 +49,7 @@ async def main() -> None:
         print("HK1 target:", trovis.heating_circuit_1.room_setpoint_active, "°C")
         print("HK1 pump:", trovis.heating_circuit_1.pump_running)
         print("HK1 curve:", trovis.heating_circuit_1.heating_curve())
-        print("Hot water:", trovis.hot_water.setpoint_active, "charging:", trovis.hot_water.charging)
+        print("Hot water:", trovis.hot_water.setpoint_active, "charging:", trovis.hot_water.charge_pump_running)
         print("Clock:", trovis.clock.datetime)
 
         # Writes (reverse the scaling/encoding automatically)
