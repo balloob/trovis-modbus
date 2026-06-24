@@ -70,6 +70,41 @@ await trovis.hot_water.async_update()              # only reads the HK4 register
 unsub = trovis.hot_water.add_update_listener(refresh_my_entity)
 ```
 
+## Command-line tool
+
+`script/query.py` connects to a controller, reads it once, and prints every
+value — handy for checking a real device without Home Assistant. It needs a
+concrete backend, so install the `cli` extra (`pip install trovis-modbus[cli]`,
+or run via `uv run --extra cli`):
+
+```bash
+# Network gateway (RTU-over-TCP by default — how Trovis gateways work):
+uv run --extra cli python script/query.py tcp 192.168.1.50 --unit 246
+
+# Serial / USB (defaults to the Trovis 19200 8N1 line):
+uv run --extra cli python script/query.py serial /dev/ttyUSB0 --unit 246
+```
+
+Use `--port`, `--framer {rtu,socket}` (TCP) or `--baudrate`/`--parity`/… (serial)
+to override defaults; `--help` lists them all. Output is grouped by sub-system:
+
+```text
+Device
+------
+  model             Trovis 5579
+  firmware_version  3.05
+  ...
+
+Heating circuit 1
+-----------------
+  mode                  automatic
+  room_temperature      20.0 °C
+  room_setpoint_active  21.0 °C
+  flow_temperature      55.0 °C
+  pump_running          True
+  ...
+```
+
 ## Develop / test
 
 ```bash

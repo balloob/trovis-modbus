@@ -19,6 +19,10 @@ classifiers = [
 # ModbusUnit built from whichever backend they choose.
 dependencies = ["modbus-connection>=1.0,<2"]
 
+[project.optional-dependencies]
+# Concrete backend for the script/query.py CLI (pip install trovis-modbus[cli]).
+cli = ["modbus-connection[pymodbus]>=1.0,<2"]
+
 [project.urls]
 Homepage = "https://github.com/balloob/trovis-modbus"
 
