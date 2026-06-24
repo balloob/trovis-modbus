@@ -8,24 +8,33 @@ import pytest
 from modbus_connection.mock import MockModbusConnection, MockModbusUnit
 
 from trovis_modbus import MonthDay, OperatingMode, Trovis557x, Weekday
+from trovis_modbus.ranges import REGISTER_RANGES
 
 from .conftest import COILS, HOLDING
 
 
 class _CountingUnit:
-    """Wraps a ModbusUnit and counts read calls; delegates everything else."""
+    """Wraps a ModbusUnit and records read calls; delegates everything else."""
 
     def __init__(self, inner: MockModbusUnit) -> None:
         self._inner = inner
-        self.register_reads = 0
-        self.coil_reads = 0
+        self.register_blocks: list[tuple[int, int]] = []
+        self.coil_blocks: list[tuple[int, int]] = []
+
+    @property
+    def register_reads(self) -> int:
+        return len(self.register_blocks)
+
+    @property
+    def coil_reads(self) -> int:
+        return len(self.coil_blocks)
 
     async def read_holding_registers(self, address: int, count: int) -> list[int]:
-        self.register_reads += 1
+        self.register_blocks.append((address, count))
         return await self._inner.read_holding_registers(address, count)
 
     async def read_coils(self, address: int, count: int) -> list[bool]:
-        self.coil_reads += 1
+        self.coil_blocks.append((address, count))
         return await self._inner.read_coils(address, count)
 
     def __getattr__(self, name: str) -> object:
@@ -125,12 +134,32 @@ async def test_full_update_consolidates_reads() -> None:
     )
     await device.async_update()
 
-    # 155 fields collapse into a couple dozen block reads, far fewer than both the
-    # field count and the ~40 calls a per-component update would issue.
+    # 155 fields collapse into ~18 range-aware block reads — far fewer than the
+    # field count, and well under the ~40 a per-component update would issue.
     total_reads = unit.register_reads + unit.coil_reads
     assert total_reads < field_count // 4
-    assert unit.register_reads <= 16
-    assert unit.coil_reads <= 10
+    assert unit.register_reads <= 12
+    assert unit.coil_reads <= 8
+
+
+async def test_full_update_never_reads_across_an_unreadable_gap() -> None:
+    """Every block stays inside the controller's readable ranges (no NAK risk)."""
+    inner = MockModbusConnection().for_unit(1)
+    unit = _CountingUnit(inner)
+    device = Trovis557x(unit)  # type: ignore[arg-type]
+    await device.async_update()
+
+    def readable(address: int) -> bool:
+        return any(low <= address <= high for low, high in REGISTER_RANGES)
+
+    for start, count in unit.register_blocks:
+        assert all(readable(start + i) for i in range(count)), (
+            f"block {start}..{start + count - 1} crosses an unreadable gap"
+        )
+    # Addresses 7-8 (between ranges [0,6] and [9,40]) are never read — the low
+    # registers split there instead of being merged into one 0..26 block.
+    read = {start + i for start, count in unit.register_blocks for i in range(count)}
+    assert 7 not in read and 8 not in read
 
 
 async def test_consolidated_reads_decode_correctly() -> None:

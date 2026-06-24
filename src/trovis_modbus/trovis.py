@@ -10,6 +10,7 @@ from .controller import Controller
 from .device_info import DeviceInformation
 from .heating_circuit import HeatingCircuit
 from .hot_water import HotWater
+from .ranges import COIL_RANGES, REGISTER_RANGES
 from .sensors import Sensors
 
 if TYPE_CHECKING:
@@ -44,6 +45,11 @@ class Trovis557x:
         self.heating_circuit_2 = HeatingCircuit(unit, index=2)
         self.heating_circuit_3 = HeatingCircuit(unit, index=3)
         self.hot_water = HotWater(unit)
+        # Hand every sub-system the controller's readable address ranges, so an
+        # independent component refresh also avoids crossing an unreadable gap.
+        for component in self.components:
+            component._register_ranges = REGISTER_RANGES
+            component._coil_ranges = COIL_RANGES
 
     @property
     def heating_circuits(self) -> tuple[HeatingCircuit, HeatingCircuit, HeatingCircuit]:
@@ -77,7 +83,7 @@ class Trovis557x:
         components = self.components
         register_items = [item for c in components for item in c._register_items()]
         coil_items = [item for c in components for item in c._coil_items()]
-        await _bulk_read_registers(self._unit, register_items)
-        await _bulk_read_coils(self._unit, coil_items)
+        await _bulk_read_registers(self._unit, register_items, REGISTER_RANGES)
+        await _bulk_read_coils(self._unit, coil_items, COIL_RANGES)
         for component in components:
             component._notify()

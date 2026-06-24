@@ -388,13 +388,33 @@ RegisterItem = tuple[int, "RegisterField[Any]", dict[str, Any]]
 CoilItem = tuple[int, "CoilField", dict[str, Any]]
 
 
-def _plan_blocks(spans: Iterable[tuple[int, int]]) -> list[tuple[int, int]]:
+Range = tuple[int, int]  # an inclusive (low, high) readable address range
+
+
+def _range_of(address: int, ranges: tuple[Range, ...] | None) -> Range | None:
+    """The readable range containing ``address``, or ``None``."""
+    if ranges is None:
+        return None
+    for low, high in ranges:
+        if low <= address <= high:
+            return (low, high)
+    return None
+
+
+def _plan_blocks(
+    spans: Iterable[tuple[int, int]],
+    ranges: tuple[Range, ...] | None = None,
+) -> list[tuple[int, int]]:
     """Group ``(start_address, width)`` spans into ``(start, count)`` read blocks.
 
-    Spans no more than ``_MAX_GAP`` apart share one block — reading a few unused
-    registers in a small gap is far cheaper than a second round-trip — and a block
-    never grows past ``_MAX_SPAN`` registers. A multi-register value is never split
-    across two blocks: each span is placed whole.
+    A multi-register value is never split across blocks (each span is placed
+    whole) and a block never grows past ``_MAX_SPAN`` registers.
+
+    Without ``ranges`` (the generic default), spans no more than ``_MAX_GAP``
+    apart share a block. With ``ranges`` — the controller's readable address
+    ranges — spans merge only when they sit in the *same* range (the gap between
+    them is then readable too), and never across a range boundary; reads are
+    still clipped to the addresses actually used.
     """
     ordered = sorted(set(spans))
     if not ordered:
@@ -402,26 +422,38 @@ def _plan_blocks(spans: Iterable[tuple[int, int]]) -> list[tuple[int, int]]:
     blocks: list[tuple[int, int]] = []
     block_start, width = ordered[0]
     block_end = block_start + width - 1  # last (inclusive) address covered so far
+    block_range = _range_of(block_start, ranges)
     for address, width in ordered[1:]:
         end = address + width - 1
-        if address - block_end <= _MAX_GAP and end - block_start + 1 <= _MAX_SPAN:
+        if ranges is None:
+            mergeable = address - block_end <= _MAX_GAP
+        else:
+            address_range = _range_of(address, ranges)
+            mergeable = address_range is not None and address_range == block_range
+        if mergeable and end - block_start + 1 <= _MAX_SPAN:
             block_end = max(block_end, end)
         else:
             blocks.append((block_start, block_end - block_start + 1))
             block_start, block_end = address, end
+            block_range = _range_of(address, ranges)
     blocks.append((block_start, block_end - block_start + 1))
     return blocks
 
 
-async def _bulk_read_registers(unit: ModbusUnit, items: list[RegisterItem]) -> None:
+async def _bulk_read_registers(
+    unit: ModbusUnit,
+    items: list[RegisterItem],
+    ranges: tuple[Range, ...] | None = None,
+) -> None:
     """Read every ``(address, field, store)`` in as few Modbus calls as possible.
 
     Targets are pooled across whatever components are passed in, so adjacent
     registers — even ones belonging to different sub-systems — are fetched
-    together, and a multi-register value is always kept within one block. Each
-    field's decoded value lands in its ``store`` under ``field.name``; a Modbus
-    exception covering a block sets those fields to ``None`` (other errors
-    propagate so the caller can mark the device down).
+    together, and a multi-register value is always kept within one block.
+    ``ranges`` (the device's readable address ranges) keeps reads from crossing an
+    unreadable gap. Each field's decoded value lands in its ``store`` under
+    ``field.name``; a Modbus exception covering a block sets those fields to
+    ``None`` (other errors propagate so the caller can mark the device down).
     """
     if not items:
         return
@@ -430,7 +462,7 @@ async def _bulk_read_registers(unit: ModbusUnit, items: list[RegisterItem]) -> N
     for address, field, store in items:
         by_address.setdefault(address, []).append((field, store))
         spans.append((address, field.count))
-    for start, count in _plan_blocks(spans):
+    for start, count in _plan_blocks(spans, ranges):
         try:
             words = await unit.read_holding_registers(start, count)
         except ModbusExceptionError:
@@ -443,14 +475,18 @@ async def _bulk_read_registers(unit: ModbusUnit, items: list[RegisterItem]) -> N
                 store[field.name] = field.decode(words[offset : offset + field.count])
 
 
-async def _bulk_read_coils(unit: ModbusUnit, items: list[CoilItem]) -> None:
+async def _bulk_read_coils(
+    unit: ModbusUnit,
+    items: list[CoilItem],
+    ranges: tuple[Range, ...] | None = None,
+) -> None:
     """Read coil ``(address, field, store)`` targets in as few calls as possible."""
     if not items:
         return
     by_address: dict[int, list[tuple[CoilField, dict[str, Any]]]] = {}
     for address, field, store in items:
         by_address.setdefault(address, []).append((field, store))
-    for start, count in _plan_blocks((address, 1) for address in by_address):
+    for start, count in _plan_blocks(((address, 1) for address in by_address), ranges):
         try:
             bits = await unit.read_coils(start, count)
         except ModbusExceptionError:
@@ -496,6 +532,10 @@ class Component:
         self._values: dict[str, Any] = {}
         self._coils: dict[str, bool | None] = {}
         self._listeners: list[UpdateListener] = []
+        # The device's readable address ranges, set by the owning device so reads
+        # don't cross an unreadable gap; None falls back to gap-based planning.
+        self._register_ranges: tuple[Range, ...] | None = None
+        self._coil_ranges: tuple[Range, ...] | None = None
 
     def _address(self, field: RegisterField[Any] | CoilField) -> int:
         return field.address + field.stride * (self._index - 1)
@@ -537,8 +577,10 @@ class Component:
         :meth:`Trovis557x.async_update` pools every sub-system's reads instead, to
         fetch the whole device in as few Modbus calls as possible.
         """
-        await _bulk_read_registers(self._unit, self._register_items())
-        await _bulk_read_coils(self._unit, self._coil_items())
+        await _bulk_read_registers(
+            self._unit, self._register_items(), self._register_ranges
+        )
+        await _bulk_read_coils(self._unit, self._coil_items(), self._coil_ranges)
         self._notify()
 
     # -- writes --------------------------------------------------------------
