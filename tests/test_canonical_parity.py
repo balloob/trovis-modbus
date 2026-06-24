@@ -23,6 +23,11 @@ _REF = json.loads(
 CANON_REG: dict[int, dict[str, Any]] = {e["id"]: e for e in _REF["registers"].values()}
 CANON_COIL: dict[int, dict[str, Any]] = {e["id"]: e for e in _REF["coils"].values()}
 
+# Scales confirmed on real hardware that differ from the canonical table (whose
+# factors are not perfectly reliable). Tom-Bom-badil's Trovis 5578 reads register
+# 117 (AT adaptation rate) as 3.0 K/h, i.e. scale 0.1 — the table lists factor 1.
+HARDWARE_VERIFIED_SCALE: dict[int, float] = {117: 0.1}
+
 
 def _canonical_scale(entry: dict[str, Any]) -> float | None:
     """Effective value scale of a canonical entry (None = special/non-numeric)."""
@@ -85,7 +90,10 @@ def test_register_matches_canonical(
     assert address in CANON_REG, f"{label}.{field.name} address {address} not in spec"
     entry = CANON_REG[address]
     if field.kind == "number":
-        expected = _canonical_scale(entry)
+        if address in HARDWARE_VERIFIED_SCALE:
+            expected = HARDWARE_VERIFIED_SCALE[address]
+        else:
+            expected = _canonical_scale(entry)
         if expected is not None:
             assert field.scale == pytest.approx(expected), (
                 f"{label}.{field.name} scale {field.scale} != spec {expected} "

@@ -24,7 +24,7 @@ class Controller(Component):
     switch_middle = operating_mode(103)  # RK2
     switch_bottom = operating_mode(104)  # hot water
     summer_outside_limit = temperature(116, writable=True)
-    outside_delay = gauge(117, 1.0, writable=True, unit="K/h")  # AT adaptation delay
+    outside_delay = gauge(117, 0.1, writable=True, unit="K/h")  # AT adaptation rate
     frost_limit = temperature(122, writable=True)
     station_address = integer(142, signed=False)
     summer_days_on = integer(114, writable=True)  # days above limit to enter summer
