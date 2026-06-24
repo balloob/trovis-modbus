@@ -2,27 +2,22 @@
 
 from __future__ import annotations
 
-from .component import (
-    Component,
-    coil,
-    gauge,
-    integer,
-    operating_mode,
-    raw_register,
-    temperature,
-)
+from modbus_connection.model import coil, gauge, integer, raw_register
+
+from .enums import OperatingMode, enum_or_none
+from .model import TrovisComponent, temperature
 from .utils import MonthDay
 
 
-class Controller(Component):
+class Controller(TrovisComponent):
     """Controller-wide status and settings."""
 
     error_status = integer(149, signed=False)
     max_flow_setpoint = temperature(98)
-    # The three front-panel rotary switches, top to bottom.
-    switch_top = operating_mode(102)  # RK1
-    switch_middle = operating_mode(103)  # RK2
-    switch_bottom = operating_mode(104)  # hot water
+    # The three front-panel rotary switches, top to bottom (RK1 / RK2 / hot water).
+    _switch_top_raw = integer(102, signed=False)
+    _switch_middle_raw = integer(103, signed=False)
+    _switch_bottom_raw = integer(104, signed=False)
     summer_outside_limit = temperature(116, writable=True)
     outside_delay = gauge(117, 0.1, writable=True, unit="K/h")  # AT adaptation rate
     frost_limit = temperature(122, writable=True)
@@ -38,6 +33,21 @@ class Controller(Component):
 
     _summer_start_raw = raw_register(112)
     _summer_end_raw = raw_register(113)
+
+    @property
+    def switch_top(self) -> OperatingMode | None:
+        """Top rotary switch (RK1)."""
+        return enum_or_none(self._switch_top_raw, OperatingMode)
+
+    @property
+    def switch_middle(self) -> OperatingMode | None:
+        """Middle rotary switch (RK2)."""
+        return enum_or_none(self._switch_middle_raw, OperatingMode)
+
+    @property
+    def switch_bottom(self) -> OperatingMode | None:
+        """Bottom rotary switch (hot water)."""
+        return enum_or_none(self._switch_bottom_raw, OperatingMode)
 
     @property
     def summer_start(self) -> MonthDay | None:

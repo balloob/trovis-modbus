@@ -7,10 +7,10 @@ here.
 
 from __future__ import annotations
 
-from .component import Component, temperature
+from .model import TrovisComponent, temperature
 
 
-class Sensors(Component):
+class Sensors(TrovisComponent):
     """Controller-wide temperature inputs."""
 
     # Trailing labels are the controller's sensor terminals (AF1, VF4, ...).

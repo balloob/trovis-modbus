@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from modbus_connection.model import Component, async_update_all
+
 from .clock import Clock
-from .component import Component, _bulk_read_coils, _bulk_read_registers
 from .controller import Controller
 from .device_info import DeviceInformation
 from .heating_circuit import HeatingCircuit
@@ -45,11 +46,6 @@ class Trovis557x:
         self.heating_circuit_2 = HeatingCircuit(unit, index=2)
         self.heating_circuit_3 = HeatingCircuit(unit, index=3)
         self.hot_water = HotWater(unit)
-        # Hand every sub-system the controller's readable address ranges, so an
-        # independent component refresh also avoids crossing an unreadable gap.
-        for component in self.components:
-            component._register_ranges = REGISTER_RANGES
-            component._coil_ranges = COIL_RANGES
 
     @property
     def heating_circuits(self) -> tuple[HeatingCircuit, HeatingCircuit, HeatingCircuit]:
@@ -80,10 +76,6 @@ class Trovis557x:
         from different sub-systems are fetched together — rather than each
         component querying independently. Listeners then fire per sub-system.
         """
-        components = self.components
-        register_items = [item for c in components for item in c._register_items()]
-        coil_items = [item for c in components for item in c._coil_items()]
-        await _bulk_read_registers(self._unit, register_items, REGISTER_RANGES)
-        await _bulk_read_coils(self._unit, coil_items, COIL_RANGES)
-        for component in components:
-            component._notify()
+        await async_update_all(
+            self._unit, self.components, REGISTER_RANGES, COIL_RANGES
+        )

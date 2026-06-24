@@ -31,3 +31,13 @@ class Weekday(IntEnum):
     FRIDAY = 5
     SATURDAY = 6
     SUNDAY = 7
+
+
+def enum_or_none[E: IntEnum](raw: int | None, enum: type[E]) -> E | None:
+    """Map a raw register word to ``enum``, or ``None`` if absent / out of range."""
+    if raw is None:
+        return None
+    try:
+        return enum(raw)
+    except ValueError:
+        return None

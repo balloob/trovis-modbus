@@ -15,16 +15,22 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "Topic :: Home Automation",
 ]
-# Protocol only — no Modbus backend is hard-depended on. The caller injects a
-# ModbusUnit built from whichever backend they choose.
-dependencies = ["modbus-connection>=1.0,<2"]
+# Protocol + the device-modelling framework (modbus_connection.model). The caller
+# injects a ModbusUnit built from whichever backend they choose.
+# DRAFT: this needs the unreleased .model module; pin to >=1.1 once published.
+dependencies = ["modbus-connection"]
 
 [project.optional-dependencies]
 # Concrete backend for the script/query.py CLI (pip install trovis-modbus[cli]).
-cli = ["modbus-connection[pymodbus]>=1.0,<2"]
+cli = ["modbus-connection[pymodbus]"]
 
 [project.urls]
 Homepage = "https://github.com/balloob/trovis-modbus"
+
+[tool.uv.sources]
+# DRAFT: use the local checkout until modbus-connection 1.1 (with .model) ships,
+# then drop this block and pin the dependency to >=1.1,<2.
+modbus-connection = { path = "../modbus-connection", editable = true }
 
 [dependency-groups]
 dev = [

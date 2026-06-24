@@ -21,9 +21,9 @@ import sys
 from enum import IntEnum
 
 from modbus_connection import ModbusConnection, ModbusError
+from modbus_connection.model import Component, RegisterField
 
 from trovis_modbus import MonthDay, Trovis557x
-from trovis_modbus.component import Component, RegisterField
 
 # (label, attribute name on Trovis557x) — the order things are printed.
 SECTIONS: list[tuple[str, str]] = [

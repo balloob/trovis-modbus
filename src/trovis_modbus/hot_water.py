@@ -2,26 +2,22 @@
 
 from __future__ import annotations
 
-from .component import (
-    Component,
-    coil,
-    gauge,
-    integer,
-    operating_mode,
-    temperature,
-    time_value,
-    weekday_value,
-)
-from .enums import OperatingMode
+import datetime
+
+from modbus_connection.model import coil, gauge, integer, raw_register
+
+from .enums import OperatingMode, Weekday, enum_or_none
+from .model import TrovisComponent, temperature
+from .utils import time_from_hhmm
 
 
-class HotWater(Component):
+class HotWater(TrovisComponent):
     """Domestic hot water: setpoints, charging and thermal disinfection."""
 
     storage_temperature = temperature(22)  # SF1
     storage_temperature_lower = temperature(23)  # SF2
 
-    mode = operating_mode(111, writable=True, level_coil=94)
+    _mode_raw = integer(111, signed=False, writable=True, level_coil=94)
     setpoint_day = temperature(1799, writable=True)
     setpoint_active = temperature(1807)
     setpoint_max = temperature(1800, writable=True)
@@ -33,9 +29,9 @@ class HotWater(Component):
     active_charge_setpoint = temperature(1837)
     return_max = temperature(1827, writable=True)
     disinfection_temp = temperature(1829, writable=True)
-    disinfection_weekday = weekday_value(1830, writable=True)
-    disinfection_start = time_value(1831, writable=True)
-    disinfection_stop = time_value(1832, writable=True)
+    _disinfection_weekday_raw = integer(1830, signed=False, writable=True)
+    _disinfection_start_raw = raw_register(1831, writable=True)
+    _disinfection_stop_raw = raw_register(1832, writable=True)
     disinfection_hold = integer(1838, writable=True, unit="min")  # hold duration
 
     automatic = coil(1799)  # following the time program
@@ -52,6 +48,26 @@ class HotWater(Component):
     circulation_pump_running = coil(60, writable=True, level_coil=99)  # ZP
 
     @property
+    def mode(self) -> OperatingMode | None:
+        """Hot-water operating mode."""
+        return enum_or_none(self._mode_raw, OperatingMode)
+
+    @property
+    def disinfection_weekday(self) -> Weekday | None:
+        """Weekday of the thermal-disinfection cycle (OFF = disabled)."""
+        return enum_or_none(self._disinfection_weekday_raw, Weekday)
+
+    @property
+    def disinfection_start(self) -> datetime.time | None:
+        """Start time of the thermal-disinfection window."""
+        return time_from_hhmm(self._disinfection_start_raw)
+
+    @property
+    def disinfection_stop(self) -> datetime.time | None:
+        """End time of the thermal-disinfection window."""
+        return time_from_hhmm(self._disinfection_stop_raw)
+
+    @property
     def charging(self) -> bool | None:
         """Whether the storage is currently being charged (charge pump on)."""
         return self.charge_pump_running
@@ -62,7 +78,7 @@ class HotWater(Component):
 
     async def set_mode(self, mode: OperatingMode) -> None:
         """Set the operating mode."""
-        await self.write("mode", mode)
+        await self.write("_mode_raw", int(mode))
 
     async def start_forced_charge(self) -> None:
         """Trigger a one-off storage charge."""
