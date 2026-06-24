@@ -13,9 +13,10 @@ from .component import Component, temperature
 class Sensors(Component):
     """Controller-wide temperature inputs."""
 
-    outside_1 = temperature(9, doc="Outside sensor AF1")
-    outside_2 = temperature(10, doc="Outside sensor AF2")
-    flow_4 = temperature(15, doc="Flow sensor VF4")
-    storage_remote = temperature(24, doc="Storage/remote sensor SF3/FG3")
-    remote_1 = temperature(25, unit="K", doc="Remote adjuster FG1")
-    remote_2 = temperature(26, unit="K", doc="Remote adjuster FG2")
+    # Trailing labels are the controller's sensor terminals (AF1, VF4, ...).
+    outside_1 = temperature(9)  # AF1
+    outside_2 = temperature(10)  # AF2
+    flow_4 = temperature(15)  # VF4
+    storage_remote = temperature(24)  # SF3/FG3
+    remote_1 = temperature(25, unit="K")  # FG1
+    remote_2 = temperature(26, unit="K")  # FG2

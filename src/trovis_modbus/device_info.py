@@ -14,7 +14,7 @@ class DeviceInformation(Component):
 
     manufacturer = "Samson"
 
-    system = gauge(1, 0.1, signed=False, doc="Hydraulic system code")
+    system = gauge(1, 0.1, signed=False)  # hydraulic-system / "Anlage" code
     _model_raw = integer(0, signed=False)
     _firmware_raw = gauge(2, 0.01, signed=False)
     _hardware_raw = gauge(3, 0.01, signed=False)

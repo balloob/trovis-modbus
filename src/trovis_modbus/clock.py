@@ -10,7 +10,7 @@ from .component import Component, raw_register, time_value
 class Clock(Component):
     """Controller clock. ``time`` decodes directly; ``date`` needs day + year."""
 
-    time = time_value(99, writable=True, doc="Time of day")
+    time = time_value(99, writable=True)
     _date_raw = raw_register(100, writable=True)
     _year_raw = raw_register(101, writable=True)
 
