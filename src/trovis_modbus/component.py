@@ -57,7 +57,6 @@ class RegisterField[T]:
         unit: str | None = None,
         level_coil: int | None = None,
         level_coil_stride: int = 0,
-        doc: str = "",
     ) -> None:
         self.address = address
         self.scale = scale
@@ -72,8 +71,6 @@ class RegisterField[T]:
         self.level_coil = level_coil
         self.level_coil_stride = level_coil_stride
         self._decimals = _decimals(scale)
-        suffix = f" ({unit})" if unit else ""
-        self.__doc__ = f"{doc}{suffix}".strip() or None
 
     def __set_name__(self, owner: type, name: str) -> None:
         self.name = name
@@ -138,14 +135,12 @@ class CoilField:
         stride: int = 0,
         level_coil: int | None = None,
         level_coil_stride: int = 0,
-        doc: str = "",
     ) -> None:
         self.address = address
         self.writable = writable
         self.stride = stride
         self.level_coil = level_coil
         self.level_coil_stride = level_coil_stride
-        self.__doc__ = doc or None
 
     def __set_name__(self, owner: type, name: str) -> None:
         self.name = name
@@ -175,7 +170,6 @@ def temperature(
     level_coil: int | None = None,
     level_coil_stride: int = 0,
     unit: str = "°C",
-    doc: str = "",
 ) -> RegisterField[float]:
     """A signed 0.1-scaled temperature register with the NaN sentinel."""
     return RegisterField(
@@ -188,7 +182,6 @@ def temperature(
         level_coil=level_coil,
         level_coil_stride=level_coil_stride,
         unit=unit,
-        doc=doc,
     )
 
 
@@ -200,7 +193,6 @@ def gauge(
     stride: int = 0,
     writable: bool = False,
     unit: str | None = None,
-    doc: str = "",
 ) -> RegisterField[float]:
     """A scaled numeric register (slope, level, hysteresis, ...)."""
     return RegisterField(
@@ -210,7 +202,6 @@ def gauge(
         stride=stride,
         writable=writable,
         unit=unit,
-        doc=doc,
     )
 
 
@@ -221,7 +212,6 @@ def integer(
     stride: int = 0,
     writable: bool = False,
     unit: str | None = None,
-    doc: str = "",
 ) -> RegisterField[int]:
     """An unscaled integer register (counts, percentages, addresses)."""
     return RegisterField(
@@ -231,7 +221,6 @@ def integer(
         stride=stride,
         writable=writable,
         unit=unit,
-        doc=doc,
     )
 
 
@@ -242,7 +231,6 @@ def operating_mode(
     writable: bool = False,
     level_coil: int | None = None,
     level_coil_stride: int = 0,
-    doc: str = "",
 ) -> RegisterField[OperatingMode]:
     """An operating-mode register (``Liste_Schalter``)."""
     return RegisterField(
@@ -252,29 +240,22 @@ def operating_mode(
         writable=writable,
         level_coil=level_coil,
         level_coil_stride=level_coil_stride,
-        doc=doc,
     )
 
 
-def weekday_value(
-    address: int, *, writable: bool = False, doc: str = ""
-) -> RegisterField[Weekday]:
+def weekday_value(address: int, *, writable: bool = False) -> RegisterField[Weekday]:
     """A weekday register (0 = off)."""
-    return RegisterField(address, kind="weekday", writable=writable, doc=doc)
+    return RegisterField(address, kind="weekday", writable=writable)
 
 
-def time_value(
-    address: int, *, writable: bool = False, doc: str = ""
-) -> RegisterField[time]:
+def time_value(address: int, *, writable: bool = False) -> RegisterField[time]:
     """A time-of-day register (HHMM)."""
-    return RegisterField(address, kind="time", writable=writable, doc=doc)
+    return RegisterField(address, kind="time", writable=writable)
 
 
-def raw_register(
-    address: int, *, writable: bool = False, doc: str = ""
-) -> RegisterField[int]:
+def raw_register(address: int, *, writable: bool = False) -> RegisterField[int]:
     """A raw register word (no scaling/sign handling)."""
-    return RegisterField(address, kind="raw", writable=writable, doc=doc)
+    return RegisterField(address, kind="raw", writable=writable)
 
 
 def coil(
@@ -284,7 +265,6 @@ def coil(
     stride: int = 0,
     level_coil: int | None = None,
     level_coil_stride: int = 0,
-    doc: str = "",
 ) -> CoilField:
     """A coil."""
     return CoilField(
@@ -293,7 +273,6 @@ def coil(
         stride=stride,
         level_coil=level_coil,
         level_coil_stride=level_coil_stride,
-        doc=doc,
     )
 
 
