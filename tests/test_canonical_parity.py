@@ -1,9 +1,12 @@
-"""Verify every field against the canonical Samson Trovis 557x point list.
+"""Verify modeled fields against the Samson Trovis 557x reference point list.
 
 The reference (``tests/reference/canonical_points.json``) is the address/scale
-table from the Tom-Bom-badil SmartHomeNG plugin — the authoritative consolidated
-Modbus point list for the 557x family. This test catches any wrong address,
-scale, or read-only/writable mislabel.
+table from the Tom-Bom-badil SmartHomeNG plugin. It is used as a known reference
+for modeled fields, but it is not treated as a complete list of everything the
+library must expose.
+
+This test catches wrong addresses, scales, or read-only/writable labels for
+fields that are currently modeled.
 """
 
 from __future__ import annotations

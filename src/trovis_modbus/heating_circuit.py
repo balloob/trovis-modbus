@@ -19,12 +19,6 @@ class HeatingCircuit(TrovisComponent):
     # Override coils (mode 88+2n, pump 95+1n) released before a write.
     ebene_coils = {"mode": (88, 2), "pump_running": (95, 1)}
 
-    # Measured temperatures, by the conventional per-circuit sensor wiring
-    # (VF/RüF/RF input N feeds circuit N).
-    flow_temperature = temperature(12, stride=1)  # VF
-    return_temperature = temperature(16, stride=1)  # RüF
-    room_temperature = temperature(19, stride=1)  # RF
-
     mode = enum(105, OperatingMode, stride=2, writable=True)
     control_signal = integer(106, signed=False, stride=2, unit="%")  # valve position
     flow_setpoint = temperature(999, stride=200)

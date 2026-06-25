@@ -47,13 +47,43 @@ def test_parse_args_serial() -> None:
 def test_values_lists_every_subsystem_field(mock_modbus_unit: MockModbusUnit) -> None:
     """Each sub-system's public fields are enumerated, methods excluded."""
     device = Trovis557x(mock_modbus_unit)
-    rows = query._values(device.heating_circuit_1)
-    names = {name for name, _value, _unit in rows}
-    assert {"mode", "flow_temperature", "pump_running", "room_setpoint_active"} <= names
+
+    circuit_rows = query._values(device.heating_circuit_1)
+    circuit_names = {name for name, _value, _unit in circuit_rows}
+
+    assert {"mode", "pump_running", "room_setpoint_active"} <= circuit_names
+    assert "flow_temperature" not in circuit_names
+    assert "return_temperature" not in circuit_names
+    assert "room_temperature" not in circuit_names
+
+    sensor_rows = query._values(device.sensors)
+    sensor_names = {name for name, _value, _unit in sensor_rows}
+
+    assert {
+        "af1",
+        "af2",
+        "vf1",
+        "vf2",
+        "vf3",
+        "vf4",
+        "ruef1",
+        "ruef2",
+        "ruef3",
+        "rf1",
+        "rf2",
+        "rf3",
+        "sf1",
+        "sf2",
+        "sf3_fg3",
+        "fg1",
+        "fg2",
+    } <= sensor_names
+
     # Methods / private helpers are not data rows.
-    assert "heating_curve" not in names
-    assert "async_update" not in names
-    assert all(not n.startswith("_") for n in names)
+    assert "heating_curve" not in circuit_names
+    assert "async_update" not in circuit_names
+    assert all(not n.startswith("_") for n in circuit_names)
+    assert all(not n.startswith("_") for n in sensor_names)
 
 
 def test_print_runs(

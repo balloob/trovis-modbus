@@ -133,7 +133,7 @@ def _format(value: object) -> str:
 
 
 def _values(component: Component) -> list[tuple[str, str, str]]:
-    """Public (name, value, unit) rows for a sub-system, in declaration order."""
+    """Public (name, value, unit) rows for a sub-system."""
     rows: list[tuple[str, str, str]] = []
     cls = type(component)
     for name in dir(component):

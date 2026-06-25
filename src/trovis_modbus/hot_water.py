@@ -21,9 +21,6 @@ class HotWater(TrovisComponent):
         "circulation_pump_running": (99, 0),
     }
 
-    storage_temperature = temperature(22)  # SF1
-    storage_temperature_lower = temperature(23)  # SF2
-
     mode = enum(111, OperatingMode, writable=True)
     setpoint_day = temperature(1799, writable=True)
     setpoint_active = temperature(1807)

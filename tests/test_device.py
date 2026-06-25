@@ -52,12 +52,11 @@ async def test_device_info(trovis: Trovis557x) -> None:
 
 async def test_sensors(trovis: Trovis557x) -> None:
     await trovis.async_update()
-    assert trovis.sensors.outside_1 == pytest.approx(12.3)
-    # Per-circuit / storage sensors live on their components now.
-    assert trovis.heating_circuit_1.flow_temperature == pytest.approx(-5.0)  # signed
-    assert trovis.heating_circuit_1.room_temperature == pytest.approx(20.0)
-    assert trovis.hot_water.storage_temperature == pytest.approx(45.0)
-    assert trovis.hot_water.storage_temperature_lower is None  # NaN sentinel
+    assert trovis.sensors.af1 == pytest.approx(-5.0)  # signed, outside
+    assert trovis.sensors.vf1 == pytest.approx(30.0)  # unsigned, water in pipes
+    assert trovis.sensors.rf1 == pytest.approx(20.0)
+    assert trovis.sensors.sf1 == pytest.approx(45.0)
+    assert trovis.sensors.sf2 is None  # NaN sentinel
 
 
 async def test_clock(trovis: Trovis557x) -> None:
@@ -134,8 +133,8 @@ async def test_full_update_consolidates_reads() -> None:
     )
     await device.async_update()
 
-    # 155 fields collapse into ~18 range-aware block reads — far fewer than the
-    # field count, and well under the ~40 a per-component update would issue.
+    # Many fields collapse into a small number of range-aware block reads — far
+    # fewer than the field count, and well under a naive per-field strategy.
     total_reads = unit.register_reads + unit.coil_reads
     assert total_reads < field_count // 4
     assert unit.register_reads <= 12
@@ -163,19 +162,19 @@ async def test_full_update_never_reads_across_an_unreadable_gap() -> None:
 
 
 async def test_consolidated_reads_decode_correctly() -> None:
-    """Interleaved per-circuit registers decode to the right circuit after pooling."""
+    """Adjacent physical sensor registers decode to the right sensor inputs."""
     inner = MockModbusConnection().for_unit(1)
-    # flow sensors VF1/VF2/VF3 are at adjacent addresses 12/13/14 — fetched in one
-    # block, then distributed to circuits 1/2/3.
-    inner.holding.update({12: 100, 13: 200, 14: 300})
+    # Flow sensors VF1/VF2/VF3 are at adjacent addresses 12/13/14 — fetched in
+    # one block, then decoded on the central Sensors component.
+    inner.holding.update({12: 300, 13: 310, 14: 320})
     unit = _CountingUnit(inner)
     device = Trovis557x(unit)  # type: ignore[arg-type]
 
     await device.async_update()
 
-    assert device.heating_circuit_1.flow_temperature == pytest.approx(10.0)
-    assert device.heating_circuit_2.flow_temperature == pytest.approx(20.0)
-    assert device.heating_circuit_3.flow_temperature == pytest.approx(30.0)
+    assert device.sensors.vf1 == pytest.approx(30.0)
+    assert device.sensors.vf2 == pytest.approx(31.0)
+    assert device.sensors.vf3 == pytest.approx(32.0)
 
 
 async def test_update_listener(trovis: Trovis557x) -> None:

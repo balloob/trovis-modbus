@@ -20,11 +20,11 @@ HOLDING: dict[int, int] = {
     2: 305,  # firmware -> 3.05
     3: 110,  # hardware -> 1.10
     5: 12345,  # serial
-    9: 123,  # outside_1 -> 12.3
-    12: 0x10000 - 50,  # hc1 flow_temperature (VF1) -> -5.0 (signed)
-    19: 200,  # hc1 room_temperature (RF1) -> 20.0
-    22: 450,  # hot_water storage_temperature (SF1) -> 45.0
-    23: 0x7FFF,  # hot_water storage_temperature_lower (SF2) -> NaN -> None
+    9: 0x10000 - 50,  # sensors.af1 -> -5.0 (signed, outside)
+    12: 300,  # sensors.vf1 -> 30.0 -> unsigned, the water in your pipes
+    19: 200,  # sensors.rf1 -> 20.0
+    22: 450,  # sensors.sf1 -> 45.0
+    23: 0x7FFF,  # sensors.sf2 -> NaN -> None
     98: 900,  # max flow setpoint -> 90.0
     99: 1430,  # time -> 14:30
     100: 2106,  # date -> 21.06
