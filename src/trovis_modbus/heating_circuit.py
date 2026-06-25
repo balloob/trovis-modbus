@@ -16,15 +16,16 @@ class HeatingCircuit(TrovisComponent):
     200 per circuit, mode/control-signal by 2, pumps/manual status by 1.
     """
 
+    # Override coils (mode 88+2n, pump 95+1n) released before a write.
+    ebene_coils = {"mode": (88, 2), "pump_running": (95, 1)}
+
     # Measured temperatures, by the conventional per-circuit sensor wiring
     # (VF/RüF/RF input N feeds circuit N).
     flow_temperature = temperature(12, stride=1)  # VF
     return_temperature = temperature(16, stride=1)  # RüF
     room_temperature = temperature(19, stride=1)  # RF
 
-    mode = enum(
-        105, OperatingMode, stride=2, writable=True, level_coil=88, level_coil_stride=2
-    )
+    mode = enum(105, OperatingMode, stride=2, writable=True)
     control_signal = integer(106, signed=False, stride=2, unit="%")  # valve position
     flow_setpoint = temperature(999, stride=200)
     flow_max = temperature(1000, stride=200, writable=True)
@@ -51,9 +52,7 @@ class HeatingCircuit(TrovisComponent):
     outside_shutdown = coil(1006, stride=200)
     standby = coil(1007, stride=200)
     frost_protection = coil(1008, stride=200)
-    pump_running = coil(
-        56, stride=1, writable=True, level_coil=95, level_coil_stride=1
-    )  # circulation pump (UP)
+    pump_running = coil(56, stride=1, writable=True)  # circulation pump (UP)
     manual_active = coil(4, stride=1)
 
     def heating_curve(self, mode: str = "active") -> list[float] | None:

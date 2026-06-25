@@ -14,10 +14,17 @@ from .utils import time_from_hhmm
 class HotWater(TrovisComponent):
     """Domestic hot water: setpoints, charging and thermal disinfection."""
 
+    # Override coils released before a write (no per-index stride here).
+    ebene_coils = {
+        "mode": (94, 0),
+        "charge_pump_running": (98, 0),
+        "circulation_pump_running": (99, 0),
+    }
+
     storage_temperature = temperature(22)  # SF1
     storage_temperature_lower = temperature(23)  # SF2
 
-    mode = enum(111, OperatingMode, writable=True, level_coil=94)
+    mode = enum(111, OperatingMode, writable=True)
     setpoint_day = temperature(1799, writable=True)
     setpoint_active = temperature(1807)
     setpoint_max = temperature(1800, writable=True)
@@ -44,8 +51,8 @@ class HotWater(TrovisComponent):
     forced_charge = coil(1806, writable=True)
     solar_pump_running = coil(1807)
     manual_active = coil(7)
-    charge_pump_running = coil(59, writable=True, level_coil=98)  # storage pump (SLP)
-    circulation_pump_running = coil(60, writable=True, level_coil=99)  # ZP
+    charge_pump_running = coil(59, writable=True)  # storage pump (SLP)
+    circulation_pump_running = coil(60, writable=True)  # ZP
 
     @property
     def disinfection_start(self) -> datetime.time | None:

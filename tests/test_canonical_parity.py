@@ -55,19 +55,17 @@ def _fields() -> list[tuple[str, int, RegisterField | CoilField]]:
 
 
 def _override_cases() -> list[Any]:
-    """(label, effective override-coil address, field) for fields with an Ebene coil."""
+    """(label, effective override-coil address, field name) for Ebene-gated fields."""
     device = Trovis557x(unit=None)  # type: ignore[arg-type]
     cases: list[Any] = []
     for component in device.components:
         index = component._index
         label = type(component).__name__ + (f"[{index}]" if index != 1 else "")
-        for field in {**component._register_fields, **component._coil_fields}.values():
-            if field.level_coil is None:
-                continue
-            address = field.level_coil + field.level_coil_stride * (index - 1)
-            cases.append(
-                pytest.param(label, address, field, id=f"{label}.{field.name}")
-            )
+        for name, (coil_address, stride) in getattr(
+            component, "ebene_coils", {}
+        ).items():
+            address = coil_address + stride * (index - 1)
+            cases.append(pytest.param(label, address, name, id=f"{label}.{name}"))
     return cases
 
 
@@ -106,15 +104,13 @@ def test_register_matches_canonical(
 
 
 @pytest.mark.parametrize(("label", "address", "field"), _override_cases())
-def test_override_coil_matches_canonical(
-    label: str, address: int, field: RegisterField | CoilField
-) -> None:
+def test_override_coil_matches_canonical(label: str, address: int, field: str) -> None:
     """Every 'Ebene' override coil is an rw remote/autonomous (Liste_FA) coil."""
     # Circuit-3 override coils (92/93/97) are absent from the 5576-based
     # reference; they follow the +2/+1 pattern verified on circuits 1 and 2.
     if "[3]" in label and address in (92, 93, 97):
         pytest.skip("circuit-3 override coils absent from reference table")
-    assert address in CANON_COIL, f"{label}.{field.name} override {address} not in spec"
+    assert address in CANON_COIL, f"{label}.{field} override {address} not in spec"
     entry = CANON_COIL[address]
     assert entry["art"] == "rw"
     assert entry["typ"] == "Liste_FA", (
