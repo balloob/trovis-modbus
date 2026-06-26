@@ -20,7 +20,7 @@ class HeatingCircuit(TrovisComponent):
     ebene_coils = {"mode": (88, 2), "pump_running": (95, 1)}
 
     mode = enum(105, OperatingMode, stride=2, writable=True)
-    control_signal = integer(106, signed=False, stride=2, unit="%")  # valve position
+    valve_position = integer(106, signed=False, stride=2, unit="%")  # control signal
     flow_setpoint = temperature(999, stride=200)
     flow_max = temperature(1000, stride=200, writable=True)
     flow_min = temperature(1001, stride=200, writable=True)
