@@ -10,18 +10,19 @@ from .model import TrovisComponent, temperature
 
 
 class HeatingCircuit(TrovisComponent):
-    """One space-heating circuit. Construct with ``index`` 1, 2 or 3.
-
+    """
+    One heating circuit. Construct with ``index`` 1, 2 or 3.
     Addresses follow the controller's offset pattern: the 1000-block steps by
     200 per circuit, mode/control-signal by 2, pumps/manual status by 1.
     """
 
-    # Override coils (mode 88+2n, pump 95+1n) released before a write.
-    ebene_coils = {"mode": (88, 2), "pump_running": (95, 1)}
+    ### registers
 
     mode = enum(105, OperatingMode, stride=2, writable=True)
+
     valve_setpoint = integer(106, signed=False, stride=2, unit="%")  # control signal
     flow_setpoint = temperature(999, stride=200)
+
     flow_max = temperature(1000, stride=200, writable=True)
     flow_min = temperature(1001, stride=200, writable=True)
     room_setpoint_day = temperature(1002, stride=200, writable=True)
@@ -29,13 +30,20 @@ class HeatingCircuit(TrovisComponent):
     room_setpoint_active = temperature(1004, stride=200)
     slope = gauge(1005, 0.1, stride=200, writable=True)  # heating-curve slope
     level = gauge(1006, 0.1, stride=200, writable=True, unit="K")  # heating-curve level
+
     return_slope = gauge(1008, 0.1, stride=200)  # return-curve slope
     return_level = gauge(1009, 0.1, stride=200, unit="K")  # return-curve level
     return_max = temperature(1010, stride=200, writable=True)
     return_base_point = temperature(1011, stride=200)  # return-curve foot point
     return_setpoint = temperature(1032, stride=200)
+
     flow_deviation = gauge(1062, 0.1, stride=200, unit="K")  # flow control deviation
 
+    ### coils
+
+    manual_active = coil(4, stride=1)
+    pump_running = coil(56, stride=1, writable=True)  # circulation pump (UP)
+    room_control_unit = coil(702, stride=1, writable=True)  # CL703 / 704 / 705
     automatic = coil(999, stride=200)  # following the time program
     day_active = coil(1000, stride=200)
     night_active = coil(1001, stride=200)
@@ -46,8 +54,12 @@ class HeatingCircuit(TrovisComponent):
     outside_shutdown = coil(1006, stride=200)
     standby = coil(1007, stride=200)
     frost_protection = coil(1008, stride=200)
-    pump_running = coil(56, stride=1, writable=True)  # circulation pump (UP)
-    manual_active = coil(4, stride=1)
+    optimization = coil(2106, stride=100, writable=True)  # CL2107 / 2207 / 2307
+    adaptation = coil(2107, stride=100, writable=True)  # CL2108 / 2208 / 2308
+
+    # Override coils (mode 88+2n, pump 95+1n) released before a write.
+    ebene_coils = {"mode": (88, 2), "pump_running": (95, 1)}
+
 
     def heating_curve(self, mode: str = "active") -> list[float] | None:
         """Flow-temperature curve over outside temps -20..20 °C.
@@ -74,12 +86,12 @@ class HeatingCircuit(TrovisComponent):
 
     async def set_mode(self, mode: OperatingMode) -> None:
         """Set the operating mode."""
-        await self.write("mode", mode)
+        await self.async_write_datapoint("mode", mode)
 
     async def set_room_setpoint_day(self, celsius: float) -> None:
         """Set the day room setpoint (°C)."""
-        await self.write("room_setpoint_day", celsius)
+        await self.async_write_datapoint("room_setpoint_day", celsius)
 
     async def set_room_setpoint_night(self, celsius: float) -> None:
         """Set the night room setpoint (°C)."""
-        await self.write("room_setpoint_night", celsius)
+        await self.async_write_datapoint("room_setpoint_night", celsius)

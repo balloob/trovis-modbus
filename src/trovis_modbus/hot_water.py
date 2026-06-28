@@ -21,6 +21,8 @@ class HotWater(TrovisComponent):
         "circulation_pump_running": (99, 0),
     }
 
+    ### sensors
+
     mode = enum(111, OperatingMode, writable=True)
     setpoint_day = temperature(1799, writable=True)
     setpoint_active = temperature(1807)
@@ -38,6 +40,9 @@ class HotWater(TrovisComponent):
     _disinfection_stop_raw = raw_register(1832, writable=True)
     disinfection_hold = integer(1838, writable=True, unit="min")  # hold duration
 
+    ### coils
+
+    intermediate_heating_operation = coil(406, writable=True)  # CL407 / FB07
     automatic = coil(1799)  # following the time program
     disinfection_active = coil(1800)
     priority = coil(1801)  # hot water has priority over heating
@@ -63,12 +68,12 @@ class HotWater(TrovisComponent):
 
     async def set_setpoint(self, celsius: float) -> None:
         """Set the hot-water day setpoint (°C)."""
-        await self.write("setpoint_day", celsius)
+        await self.async_write_datapoint("setpoint_day", celsius)
 
     async def set_mode(self, mode: OperatingMode) -> None:
         """Set the operating mode."""
-        await self.write("mode", mode)
+        await self.async_write_datapoint("mode", mode)
 
     async def start_forced_charge(self) -> None:
         """Trigger a one-off storage charge."""
-        await self.write("forced_charge", True)
+        await self.async_write_datapoint("forced_charge", True)

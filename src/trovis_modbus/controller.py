@@ -12,27 +12,37 @@ from .utils import MonthDay
 class Controller(TrovisComponent):
     """Controller-wide status and settings."""
 
-    error_status = integer(149, signed=False)
+    ##### registers
+
     max_flow_setpoint = temperature(98)
+    
     # The three front-panel rotary switches, top to bottom (RK1 / RK2 / hot water).
     switch_top = enum(102, OperatingMode)
     switch_middle = enum(103, OperatingMode)
     switch_bottom = enum(104, OperatingMode)
-    summer_outside_limit = temperature(116, writable=True)
-    outside_delay = gauge(117, 0.1, writable=True, unit="K/h")  # AT adaptation rate
-    frost_limit = temperature(122, writable=True)
-    station_address = integer(142, signed=False)
-    summer_days_on = integer(114, writable=True)  # days above limit to enter summer
-    summer_days_off = integer(115, writable=True)  # days below limit to leave summer
-
-    general_fault = coil(0)
-    summer_active = coil(8)
-    auto_daylight_saving = coil(136, writable=True)
-    manual_levels_locked = coil(149, writable=True)
-    rotary_switch_locked = coil(150, writable=True)
 
     _summer_start_raw = raw_register(112)
     _summer_end_raw = raw_register(113)
+    summer_days_on = integer(114, writable=True)  # days above limit to enter summer
+    summer_days_off = integer(115, writable=True)  # days below limit to leave summer
+    summer_outside_limit = temperature(116, writable=True)
+    outside_delay = gauge(117, 0.1, writable=True, unit="K/h")  # AT adaptation rate
+    frost_limit = temperature(122, writable=True)
+
+    station_address = integer(142, signed=False)
+    error_status = integer(149, signed=False)
+
+    ##### coils
+
+    general_fault = coil(0)
+    summer_active = coil(8)
+
+    delayed_outside_temp_adjustment_falling = coil(133, writable=True)  # CL134 / FB05
+    delayed_outside_temp_adjustment_rising = coil(134, writable=True)  # CL135 / FB06
+    auto_daylight_saving = coil(136, writable=True)
+
+    manual_levels_locked = coil(149, writable=True)
+    rotary_switch_locked = coil(150, writable=True)
 
     @property
     def summer_start(self) -> MonthDay | None:
