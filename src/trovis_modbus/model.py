@@ -1,22 +1,9 @@
 """Trovis-specific pieces layered on the ``modbus_connection.model`` framework."""
 
-# --- original comment: ---
-# """Trovis-specific pieces layered on the ``modbus_connection.model`` framework.
+from __future__ import annotations
 
-# The generic ``Component`` base, the field descriptors and the typed factories
-# (including ``enum`` for operating modes / weekdays) come straight from
-# ``modbus_connection.model`` — sub-systems import those directly. This module adds
-# only what is specific to the Trovis 557x:
-
-# - :class:`TrovisComponent`, a ``Component`` preset with the controller's readable
-#   address ranges and the "Ebene" write-unlock sequencing;
-# - :func:`temperature`, a 0.1-scaled register with the controller's NaN sentinel.
-
-# Shaping the framework has no native type for (the controller's packed HHMM times
-# and day/month dates) stays a private raw field plus a normal ``@property`` on the
-# sub-system.
-# """
-
+from collections.abc import Callable
+from enum import IntEnum
 from typing import Any
 
 from modbus_connection import ModbusError
@@ -31,7 +18,16 @@ from modbus_connection.model import (
 )
 
 from .addresses import coil_address, register_address
-from .exceptions import TrovisWriteAccessError
+from .exceptions import TrovisValueValidationError, TrovisWriteAccessError
+from .metadata import (
+    BooleanMetadata,
+    DatapointMetadata,
+    EnumMetadata,
+    NumberMetadata,
+    OptionMetadata,
+    attach_metadata,
+    step_from_digits,
+)
 from .ranges import COIL_RANGES, REGISTER_RANGES
 
 
@@ -45,24 +41,261 @@ LEVEL_GLT = False
 LEVEL_AUTARK = True
 
 
-def raw_register(hr_number: int, *args: Any, **kwargs: Any):
+def _number_validator(
+    *,
+    min_value: float | int | None = None,
+    max_value: float | int | None = None,
+    step: float | int | None = None,
+) -> Callable[[Any], Any]:
+    """Return a write validator for numeric TROVIS values."""
+
+    def validate(value: Any) -> Any:
+        number = float(value)
+
+        if min_value is not None and number < min_value:
+            raise TrovisValueValidationError(
+                f"Value {value} is below minimum {min_value}"
+            )
+
+        if max_value is not None and number > max_value:
+            raise TrovisValueValidationError(
+                f"Value {value} is above maximum {max_value}"
+            )
+
+        # Step is primarily UI metadata for now. Avoid hard float-modulo
+        # validation until we see invalid writes slipping through.
+        return value
+
+    return validate
+
+
+def _with_number_validator(
+    writable: bool | Callable[[Any], Any],
+    *,
+    min_value: float | int | None,
+    max_value: float | int | None,
+    step: float | int | None,
+) -> bool | Callable[[Any], Any]:
+    """Return writable or a validator-backed writable value."""
+    if not writable:
+        return False
+
+    if callable(writable):
+        return writable
+
+    if min_value is None and max_value is None and step is None:
+        return True
+
+    return _number_validator(
+        min_value=min_value,
+        max_value=max_value,
+        step=step,
+    )
+
+
+def raw_register(
+    hr_number: int,
+    *args: Any,
+    min_value: float | int | None = None,
+    max_value: float | int | None = None,
+    step: float | int | None = None,
+    digits: int | None = None,
+    unit: str | None = None,
+    raw_min: float | int | None = None,
+    raw_max: float | int | None = None,
+    maker_key: str | None = None,
+    maker_category: str | None = None,
+    description: str | None = None,
+    writable: bool | Callable[[Any], Any] = False,
+    **kwargs: Any,
+):
     """Create a raw register field from a manufacturer TROVIS HR reference."""
-    return _modbus_raw_register(register_address(hr_number), *args, **kwargs)
+    effective_step = step if step is not None else step_from_digits(digits)
+    effective_writable = _with_number_validator(
+        writable,
+        min_value=min_value,
+        max_value=max_value,
+        step=effective_step,
+    )
+
+    field = _modbus_raw_register(
+        register_address(hr_number),
+        *args,
+        writable=effective_writable,
+        **kwargs,
+    )
+
+    return attach_metadata(
+        field,
+        DatapointMetadata(
+            value_kind="number",
+            maker_reference=hr_number,
+            maker_key=maker_key,
+            maker_category=maker_category,
+            description=description,
+            writable=bool(writable),
+            number=NumberMetadata(
+                min_value=min_value,
+                max_value=max_value,
+                step=effective_step,
+                digits=digits,
+                unit=unit,
+                raw_min=raw_min,
+                raw_max=raw_max,
+            ),
+        ),
+    )
 
 
-def integer(hr_number: int, *args: Any, **kwargs: Any):
+def integer(
+    hr_number: int,
+    *args: Any,
+    min_value: float | int | None = None,
+    max_value: float | int | None = None,
+    step: float | int | None = None,
+    digits: int | None = None,
+    unit: str | None = None,
+    raw_min: float | int | None = None,
+    raw_max: float | int | None = None,
+    maker_key: str | None = None,
+    maker_category: str | None = None,
+    description: str | None = None,
+    writable: bool | Callable[[Any], Any] = False,
+    **kwargs: Any,
+):
     """Create an integer field from a manufacturer TROVIS HR reference."""
-    return _modbus_integer(register_address(hr_number), *args, **kwargs)
+    effective_step = step if step is not None else step_from_digits(digits)
+    effective_writable = _with_number_validator(
+        writable,
+        min_value=min_value,
+        max_value=max_value,
+        step=effective_step,
+    )
+
+    field = _modbus_integer(
+        register_address(hr_number),
+        *args,
+        writable=effective_writable,
+        unit=unit,
+        **kwargs,
+    )
+
+    return attach_metadata(
+        field,
+        DatapointMetadata(
+            value_kind="number",
+            maker_reference=hr_number,
+            maker_key=maker_key,
+            maker_category=maker_category,
+            description=description,
+            writable=bool(writable),
+            number=NumberMetadata(
+                min_value=min_value,
+                max_value=max_value,
+                step=effective_step,
+                digits=digits,
+                unit=unit,
+                raw_min=raw_min,
+                raw_max=raw_max,
+            ),
+        ),
+    )
 
 
-def gauge(hr_number: int, *args: Any, **kwargs: Any):
+def gauge(
+    hr_number: int,
+    scale: float,
+    *args: Any,
+    min_value: float | int | None = None,
+    max_value: float | int | None = None,
+    step: float | int | None = None,
+    digits: int | None = None,
+    unit: str | None = None,
+    raw_min: float | int | None = None,
+    raw_max: float | int | None = None,
+    maker_key: str | None = None,
+    maker_category: str | None = None,
+    description: str | None = None,
+    writable: bool | Callable[[Any], Any] = False,
+    **kwargs: Any,
+):
     """Create a gauge field from a manufacturer TROVIS HR reference."""
-    return _modbus_gauge(register_address(hr_number), *args, **kwargs)
+    effective_step = step if step is not None else step_from_digits(digits)
+    effective_writable = _with_number_validator(
+        writable,
+        min_value=min_value,
+        max_value=max_value,
+        step=effective_step,
+    )
+
+    field = _modbus_gauge(
+        register_address(hr_number),
+        scale,
+        *args,
+        writable=effective_writable,
+        unit=unit,
+        **kwargs,
+    )
+
+    return attach_metadata(
+        field,
+        DatapointMetadata(
+            value_kind="number",
+            maker_reference=hr_number,
+            maker_key=maker_key,
+            maker_category=maker_category,
+            description=description,
+            writable=bool(writable),
+            number=NumberMetadata(
+                min_value=min_value,
+                max_value=max_value,
+                step=effective_step,
+                digits=digits,
+                unit=unit,
+                raw_min=raw_min,
+                raw_max=raw_max,
+            ),
+        ),
+    )
 
 
-def enum(hr_number: int, *args: Any, **kwargs: Any):
+def enum(
+    hr_number: int,
+    enum_type: type[IntEnum],
+    *args: Any,
+    options: tuple[OptionMetadata, ...] | None = None,
+    maker_key: str | None = None,
+    maker_category: str | None = None,
+    description: str | None = None,
+    writable: bool | Callable[[Any], Any] = False,
+    **kwargs: Any,
+):
     """Create an enum field from a manufacturer TROVIS HR reference."""
-    return _modbus_enum(register_address(hr_number), *args, **kwargs)
+    field = _modbus_enum(
+        register_address(hr_number),
+        enum_type,
+        *args,
+        writable=writable,
+        **kwargs,
+    )
+
+    resolved_options = options or tuple(
+        OptionMetadata(member.name.lower(), int(member), member.name)
+        for member in enum_type
+    )
+
+    return attach_metadata(
+        field,
+        DatapointMetadata(
+            value_kind="enum",
+            maker_reference=hr_number,
+            maker_key=maker_key,
+            maker_category=maker_category,
+            description=description,
+            writable=bool(writable),
+            enum=EnumMetadata(enum_type=enum_type, options=resolved_options),
+        ),
+    )
 
 
 def coil(
@@ -70,38 +303,76 @@ def coil(
     *,
     stride: int = 0,
     writable: bool = False,
+    false_key: str = "off",
+    true_key: str = "on",
+    false_label: str | None = None,
+    true_label: str | None = None,
+    inverted: bool = False,
+    maker_key: str | None = None,
+    maker_category: str | None = None,
+    description: str | None = None,
 ):
     """Create a coil field from a manufacturer TROVIS CL number."""
-    return _modbus_coil(
+    field = _modbus_coil(
         coil_address(cl_number),
         stride=stride,
         writable=writable,
     )
 
+    return attach_metadata(
+        field,
+        DatapointMetadata(
+            value_kind="boolean",
+            maker_reference=cl_number,
+            maker_key=maker_key,
+            maker_category=maker_category,
+            description=description,
+            writable=writable,
+            boolean=BooleanMetadata(
+                false_key=false_key,
+                true_key=true_key,
+                false_label=false_label,
+                true_label=true_label,
+                inverted=inverted,
+            ),
+        ),
+    )
 
 
-def coil_address(cl_number: int) -> int:
-    """Return the zero-based Modbus address for a TROVIS CL number.
-    Manufacturer coil lists use CL numbers starting at 1. Modbus PDU addresses
-    are zero-based, so CL137 is sent as address 136.
-    """
-    if cl_number < 1:
-        raise ValueError(f"Invalid TROVIS coil number: {cl_number}")
-
-    return cl_number - 1
-
-
-def coil(
-    cl_number: int,
+def temperature(
+    hr_number: int,
     *,
     stride: int = 0,
     writable: bool = False,
-):
-    """Create a coil field from a manufacturer TROVIS CL number."""
-    return _modbus_coil(
-        coil_address(cl_number),
+    unit: str = "°C",
+    min_value: float | int | None = None,
+    max_value: float | int | None = None,
+    step: float | int | None = None,
+    digits: int | None = None,
+    raw_min: float | int | None = None,
+    raw_max: float | int | None = None,
+    maker_key: str | None = None,
+    maker_category: str | None = None,
+    description: str | None = None,
+) -> RegisterField[float]:
+    """A signed 0.1-scaled temperature register with the Trovis NaN sentinel."""
+    return gauge(
+        hr_number,
+        0.1,
+        signed=True,
+        nan=NAN_INT16,
         stride=stride,
         writable=writable,
+        unit=unit,
+        min_value=min_value,
+        max_value=max_value,
+        step=step,
+        digits=digits,
+        raw_min=raw_min,
+        raw_max=raw_max,
+        maker_key=maker_key,
+        maker_category=maker_category,
+        description=description,
     )
 
 
@@ -167,21 +438,29 @@ class TrovisComponent(Component):
     in :attr:`ebene_coils`.
     """
 
-    # --- original comment: ---
-    # """A Trovis sub-system: readable ranges + the Ebene write-unlock quirk.
-
-    # Some writable values are ignored over Modbus unless their "Ebene" override
-    # coil is first released to 0 (= remote control). Subclasses list those in
-    # :attr:`ebene_coils` (``field name -> (coil address, per-index stride)``); the
-    # framework removed the built-in ``level_coil`` support in 3.0, so this is the
-    # recommended consumer-side ``write`` override.
-    # """
-
     register_ranges = REGISTER_RANGES
     coil_ranges = COIL_RANGES
 
     # Writable fields whose write must first release an override coil to 0.
     ebene_coils: dict[str, tuple[int, int]] = {}
+
+    def metadata_for(self, field: str) -> DatapointMetadata | None:
+        """Return neutral TROVIS metadata for a field."""
+        descriptor = self._register_fields.get(field)
+        if descriptor is None:
+            descriptor = self._coil_fields.get(field)
+
+        if descriptor is None:
+            return None
+
+        return getattr(descriptor, "trovis_metadata", None)
+
+    def require_metadata_for(self, field: str) -> DatapointMetadata:
+        """Return TROVIS metadata for a field or raise."""
+        metadata = self.metadata_for(field)
+        if metadata is None:
+            raise AttributeError(f"unknown or untyped TROVIS field {field!r}")
+        return metadata
 
     async def write(self, field: str, value: Any) -> None:
         """Write a field, applying field-specific TROVIS preconditions."""
@@ -203,28 +482,8 @@ class TrovisComponent(Component):
     ) -> None:
         """Write a TROVIS data point.
 
-        This is the public write entry point for integrations. It checks the
-        global TROVIS write mode, refreshes the access code and then delegates
-        to the generic component write path.
+        This is the public write entry point for integrations. It refreshes the
+        access code and then delegates to the generic component write path.
         """
         await async_ensure_writing_enabled(self._unit, access_code)
         await self.write(field, value)
-
-
-def temperature(
-    hr_number: int,
-    *,
-    stride: int = 0,
-    writable: bool = False,
-    unit: str = "°C",
-) -> RegisterField[float]:
-    """A signed 0.1-scaled temperature register with the Trovis NaN sentinel."""
-    return gauge(
-        hr_number,
-        0.1,
-        signed=True,
-        nan=NAN_INT16,
-        stride=stride,
-        writable=writable,
-        unit=unit,
-    )

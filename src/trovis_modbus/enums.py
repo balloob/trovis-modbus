@@ -15,9 +15,9 @@ class OperatingMode(IntEnum):
     PROGRAM = 0  # timer program ("PA")
     AUTOMATIC = 1
     STANDBY = 2
-    MANUAL = 3  # "Hand"
-    DAY = 4  # comfort / "Sonne"
-    NIGHT = 5  # setback / "Mond"
+    MANUAL = 3  # manual mode / "Hand"
+    DAY = 4  # daytime settings / "Sonne"
+    NIGHT = 5  # nighttime settings / "Mond"
 
 
 class Weekday(IntEnum):

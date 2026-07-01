@@ -29,7 +29,16 @@ from .exceptions import (
     TrovisWriteAccessDisabledError,
     TrovisWriteAccessError,
     TrovisWriteNotImplementedError,
+    TrovisValueValidationError
 )
+from .metadata import (
+    BooleanMetadata,
+    DatapointMetadata,
+    EnumMetadata,
+    NumberMetadata,
+    OptionMetadata,
+)
+
 
 
 __all__ = [

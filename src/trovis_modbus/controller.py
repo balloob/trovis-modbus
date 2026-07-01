@@ -42,7 +42,17 @@ class Controller(TrovisComponent):
 
     delayed_outside_temp_adjustment_falling = coil(134, writable=True)  # CL134 / FB05
     delayed_outside_temp_adjustment_rising = coil(135, writable=True)  # CL135 / FB06
-    auto_daylight_saving = coil(137, writable=True)  # CL137 / FB08
+
+    auto_daylight_saving = coil(  # CL137 / FB08
+        137,
+        writable=True,
+        false_key="inactive",
+        true_key="active",
+        false_label="Inaktiv",
+        true_label="Aktiv",
+        maker_key="FB08_AutSommZeit",
+        description="Automatische Sommer-/Winterzeitumschaltung",
+    )
 
     manual_levels_locked = coil(150, writable=True)  # CL150 / FB21
     rotary_switch_locked = coil(151, writable=True)  # CL151 / FB22

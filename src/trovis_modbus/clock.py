@@ -15,7 +15,16 @@ class Clock(TrovisComponent):
 
     _time_raw = raw_register(40100, writable=True)
     _date_raw = raw_register(40101, writable=True)
-    year = raw_register(40102, writable=True)
+    year = raw_register(
+        40102,
+        writable=True,
+        min_value=2000,
+        max_value=2098,
+        digits=0,
+        maker_key="Jahr",
+        maker_category="ALG-DAT",
+        description="Jahr",
+    )
 
     @property
     def time(self) -> datetime.time | None:

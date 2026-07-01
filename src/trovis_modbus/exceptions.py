@@ -13,3 +13,6 @@ class TrovisWriteAccessDisabledError(RuntimeError):
 
 class TrovisWriteAccessError(RuntimeError):
     """Raised when TROVIS write access could not be changed or verified."""
+
+class TrovisValueValidationError(ValueError):
+    """Raised when a TROVIS value is outside its allowed domain."""
