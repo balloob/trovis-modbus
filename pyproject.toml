@@ -17,7 +17,7 @@ classifiers = [
 ]
 # Protocol + the device-modelling framework (modbus_connection.model). The caller
 # injects a ModbusUnit built from whichever backend they choose.
-dependencies = ["modbus-connection>=3.0,<4"]
+dependencies = ["modbus-connection>=3.2,<4"]
 
 [project.optional-dependencies]
 # Concrete backend for the script/query.py CLI (pip install trovis-modbus[cli]).

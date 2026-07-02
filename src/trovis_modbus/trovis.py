@@ -2,73 +2,131 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from modbus_connection.model import Component, ComponentGroup
 
+from .addresses import register_address
 from .clock import Clock
 from .controller import Controller
 from .device_info import DeviceInformation
 from .heating_circuit import HeatingCircuit
 from .hot_water import HotWater
-from .sensors import Sensors
 from .model import (
     DEFAULT_WRITE_ACCESS_CODE,
-    LEVEL_GLT,
     async_disable_writing,
     async_enable_writing,
     async_read_writing_enabled,
 )
+from .ranges import heating_circuit_count, ranges_for_model
+from .sensors import Sensors
 
 if TYPE_CHECKING:
     from modbus_connection import ModbusUnit
 
 
+@dataclass(frozen=True)
+class TrovisProbe:
+    """Result of the safe setup probe."""
+
+    model: int
+    detected_sensors: tuple[str, ...]
+
+    @property
+    def model_name(self) -> str:
+        """Return the user-facing model name."""
+        return f"Trovis {self.model}"
+
+
 class Trovis557x:
-    """A Samson Trovis 557x heating controller reached through a ``ModbusUnit``.
+    """A Samson TROVIS 557x heating controller."""
 
-    The device is a tree of independently-updatable sub-systems::
-
-        trovis = Trovis557x(unit)
-        await trovis.async_update()
-        trovis.sensors.outside_1                 # °C
-        trovis.heating_circuit_1.room_setpoint_active
-        trovis.heating_circuit_1.pump_running    # bool
-        trovis.hot_water.charge_pump_running
-        trovis.info.model
-
-    Each sub-system can also be refreshed on its own (``await
-    trovis.hot_water.async_update()``) and exposes ``add_update_listener`` so a
-    single Home Assistant entity can subscribe to just the part it shows.
-    """
-
-    def __init__(self, unit: ModbusUnit) -> None:
+    def __init__(
+        self,
+        unit: ModbusUnit,
+        *,
+        model: int = 5578,
+        detected_sensors: Iterable[str] = (),
+    ) -> None:
         self._unit = unit
+        self.model = model
+        self.detected_sensors = frozenset(detected_sensors)
+
         self.info = DeviceInformation(unit)
         self.controller = Controller(unit)
         self.clock = Clock(unit)
         self.sensors = Sensors(unit)
+
         self.heating_circuit_1 = HeatingCircuit(unit, index=1)
         self.heating_circuit_2 = HeatingCircuit(unit, index=2)
         self.heating_circuit_3 = HeatingCircuit(unit, index=3)
+
         self.hot_water = HotWater(unit)
         self._writing_enabled = False
-        # One pooled-read group over every sub-system; it derives the readable
-        # ranges from the components and caches its block plan after the first poll.
-        self._group = ComponentGroup(unit, self.components)
 
-    @property
-    def heating_circuits(self) -> tuple[HeatingCircuit, HeatingCircuit, HeatingCircuit]:
-        """The three space-heating circuits, in order."""
-        return (
+        all_components = (
+            self.info,
+            self.controller,
+            self.clock,
+            self.sensors,
             self.heating_circuit_1,
             self.heating_circuit_2,
             self.heating_circuit_3,
+            self.hot_water,
+        )
+
+        register_ranges, coil_ranges = ranges_for_model(model)
+        for component in all_components:
+            component.register_ranges = register_ranges
+            component.coil_ranges = coil_ranges
+
+        self._heating_circuits = (
+            self.heating_circuit_1,
+            self.heating_circuit_2,
+            self.heating_circuit_3,
+        )[:heating_circuit_count(model)]
+
+        self._group = ComponentGroup(unit, self.components)
+
+    @classmethod
+    async def async_probe(cls, unit: ModbusUnit) -> TrovisProbe:
+        """Read only safe identity and sensor data for setup."""
+        model = int(
+            (
+                await unit.read_holding_registers(
+                    register_address(40001),
+                    1,
+                )
+            )[0]
+        )
+
+        register_ranges, coil_ranges = ranges_for_model(model)
+
+        sensors = Sensors(unit)
+        sensors.register_ranges = register_ranges
+        sensors.coil_ranges = coil_ranges
+        await sensors.async_update()
+
+        return TrovisProbe(
+            model=model,
+            detected_sensors=sensors.detected_sensor_names,
         )
 
     @property
+    def heating_circuits(self) -> tuple[HeatingCircuit, ...]:
+        """Return the built-in heating circuits for this model."""
+        return self._heating_circuits
+
+    @property
+    def heating_circuit_indices(self) -> tuple[int, ...]:
+        """Return the available heating-circuit indices."""
+        return tuple(range(1, len(self._heating_circuits) + 1))
+
+    @property
     def components(self) -> tuple[Component, ...]:
-        """Every sub-system, for iteration."""
+        """Return every actively polled subsystem."""
         return (
             self.info,
             self.controller,
@@ -84,12 +142,7 @@ class Trovis557x:
         return self._writing_enabled
 
     async def async_update(self) -> None:
-        """Refresh every sub-system in as few Modbus calls as possible.
-        All sub-systems share one unit, so their register and coil reads are
-        pooled into a single consolidated set of block reads — adjacent registers
-        from different sub-systems are fetched together — rather than each
-        component querying independently. Listeners then fire per sub-system.
-        """
+        """Refresh all active subsystems in pooled Modbus reads."""
         await self._group.async_update()
 
     async def async_read_writing_enabled(self) -> bool:

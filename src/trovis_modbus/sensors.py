@@ -11,26 +11,34 @@ class Sensors(TrovisComponent):
     Naming follows the manual abbreviations.
     """
 
-    af1 = temperature(40010)  # AußenFühler 1 - outside_1
-    af2 = temperature(40011)  # AußenFühler 2 - outside_2
+    af1 = temperature(40010)  # Außenfühler 1
+    af2 = temperature(40011)  # Außenfühler 2
 
-    vf1 = temperature(40013)  # VorlaufFühler 1 - flow_1
-    vf2 = temperature(40014)  # VorlaufFühler 2 - flow_2
-    vf3 = temperature(40015)  # VorlaufFühler 3 - flow_3
-    vf4 = temperature(40016)  # VorlaufFühler 4 - flow_4
+    vf1 = temperature(40013)  # Vorlauffühler 1
+    vf2 = temperature(40014)  # Vorlauffühler 2
+    vf3 = temperature(40015)  # Vorlauffühler 3
+    vf4 = temperature(40016)  # Vorlauffühler 4
 
-    ruef1 = temperature(40017)  # RücklaufFühler 1 - return_1
-    ruef2 = temperature(40018)  # RücklaufFühler 2 - return_2
-    ruef3 = temperature(40019)  # RücklaufFühler 3 - return_3
+    ruef1 = temperature(40017)  # Rücklauffühler 1
+    ruef2 = temperature(40018)  # Rücklauffühler 2
+    ruef3 = temperature(40019)  # Rücklauffühler 3
 
-    rf1 = temperature(40020)  # RaumFühler 1 - room_1
-    rf2 = temperature(40021)  # RaumFühler 2 - room_2
-    rf3 = temperature(40022)  # RaumFühler 3 - room_3
+    rf1 = temperature(40020)  # Raumfühler 1
+    rf2 = temperature(40021)  # Raumfühler 2
+    rf3 = temperature(40022)  # Raumfühler 3
 
-    sf1 = temperature(40023)  # SpeicherFühler 1 - water_storage_1
-    sf2 = temperature(40024)  # SpeicherFühler 2 - water_storage_2
+    sf1 = temperature(40023)  # Speicherfühler 1
+    sf2 = temperature(40024)  # Speicherfühler 2
+    sf3_fg3 = temperature(40025)  # Speicherfühler/Ferngeber 3
 
-    fg1 = temperature(40026, unit="K")  # FernGeber 1 - remote_1
-    fg2 = temperature(40027, unit="K")  # FernGeber 2 - remote_2
+    fg1 = temperature(40026, unit="K")  # Ferngeber 1
+    fg2 = temperature(40027, unit="K")  # Ferngeber 2
 
-    sf3_fg3 = temperature(40025)  # SpeicherFühler/FernGeber 3
+    @property
+    def detected_sensor_names(self) -> tuple[str, ...]:
+        """Return sensor fields that currently have a valid value."""
+        return tuple(
+            name
+            for name in self._register_fields
+            if getattr(self, name) is not None
+        )

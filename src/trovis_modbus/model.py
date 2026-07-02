@@ -440,6 +440,7 @@ class TrovisComponent(Component):
 
     register_ranges = REGISTER_RANGES
     coil_ranges = COIL_RANGES
+    max_span = 50
 
     # Writable fields whose write must first release an override coil to 0.
     ebene_coils: dict[str, tuple[int, int]] = {}
@@ -448,11 +449,9 @@ class TrovisComponent(Component):
         """Return neutral TROVIS metadata for a field."""
         descriptor = self._register_fields.get(field)
         if descriptor is None:
-            descriptor = self._coil_fields.get(field)
-
+            descriptor = self._bit_fields.get(field)
         if descriptor is None:
             return None
-
         return getattr(descriptor, "trovis_metadata", None)
 
     def require_metadata_for(self, field: str) -> DatapointMetadata:
