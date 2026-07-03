@@ -8,7 +8,6 @@ import pytest
 from modbus_connection.mock import MockModbusConnection, MockModbusUnit
 
 from trovis_modbus import MonthDay, OperatingMode, Trovis557x, Weekday
-
 from trovis_modbus.ranges import REGISTER_RANGES
 
 from .conftest import COILS, HOLDING

@@ -83,9 +83,7 @@ def _override_cases() -> list[Any]:
     for component in device.components:
         index = component._index
         label = type(component).__name__ + (f"[{index}]" if index != 1 else "")
-        for name, (cl_number, stride) in getattr(
-            component, "ebene_coils", {}
-        ).items():
+        for name, (cl_number, stride) in getattr(component, "ebene_coils", {}).items():
             address = coil_address(cl_number + stride * (index - 1))
             cases.append(pytest.param(label, address, name, id=f"{label}.{name}"))
     return cases
