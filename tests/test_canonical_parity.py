@@ -19,6 +19,7 @@ import pytest
 from modbus_connection.model import CoilField, RegisterField
 
 from trovis_modbus import Trovis557x
+from trovis_modbus.addresses import coil_address
 
 _REF = json.loads(
     (Path(__file__).parent / "reference" / "canonical_points.json").read_text()
@@ -30,6 +31,24 @@ CANON_COIL: dict[int, dict[str, Any]] = {e["id"]: e for e in _REF["coils"].value
 # factors are not perfectly reliable). Tom-Bom-badil's Trovis 5578 reads register
 # 117 (AT adaptation rate) as 3.0 K/h, i.e. scale 0.1 — the table lists factor 1.
 HARDWARE_VERIFIED_SCALE: dict[int, float] = {117: 0.1}
+
+# Manufacturer-documented points that are modeled by the library but are not
+# present in the older SmartHomeNG/5576-derived canonical reference file.
+KNOWN_NON_CANONICAL_COILS = {
+    coil_address(cl_number)
+    for cl_number in (
+        407,  # Hot-water intermediate heating operation
+        703,
+        704,
+        705,  # Room control unit Rk1-Rk3
+        2107,
+        2207,
+        2307,  # Optimization Rk1-Rk3
+        2108,
+        2208,
+        2308,  # Adaptation Rk1-Rk3
+    )
+}
 
 
 def _canonical_scale(entry: dict[str, Any]) -> float | None:
@@ -52,7 +71,7 @@ def _fields() -> list[tuple[str, int, RegisterField | CoilField]]:
         label = type(component).__name__ + (
             f"[{component._index}]" if component._index != 1 else ""
         )
-        for field in {**component._register_fields, **component._coil_fields}.values():
+        for field in {**component._register_fields, **component._bit_fields}.values():
             out.append((label, component._address(field), field))
     return out
 
@@ -64,10 +83,10 @@ def _override_cases() -> list[Any]:
     for component in device.components:
         index = component._index
         label = type(component).__name__ + (f"[{index}]" if index != 1 else "")
-        for name, (coil_address, stride) in getattr(
+        for name, (cl_number, stride) in getattr(
             component, "ebene_coils", {}
         ).items():
-            address = coil_address + stride * (index - 1)
+            address = coil_address(cl_number + stride * (index - 1))
             cases.append(pytest.param(label, address, name, id=f"{label}.{name}"))
     return cases
 
@@ -127,6 +146,13 @@ def test_coil_matches_canonical(label: str, address: int, field: CoilField) -> N
     # reference; they follow the +200 pattern verified on circuits 1 and 2.
     if "HeatingCircuit[3]" in label and 1399 <= address <= 1408:
         pytest.skip("circuit-3 status coils absent from reference table")
+
+    if address in KNOWN_NON_CANONICAL_COILS:
+        assert field.writable, (
+            f"{label}.{field.name} is expected to be a writable manufacturer point"
+        )
+        return
+
     assert address in CANON_COIL, f"{label}.{field.name} address {address} not in spec"
     if field.writable:
         assert CANON_COIL[address]["art"] == "rw", (

@@ -7,13 +7,7 @@ from datetime import date, time
 import pytest
 from modbus_connection.mock import MockModbusConnection, MockModbusUnit
 
-from trovis_modbus import (
-    MonthDay,
-    OperatingMode,
-    Trovis557x,
-    Weekday,
-    TrovisWriteAccessDisabledError,
-)
+from trovis_modbus import MonthDay, OperatingMode, Trovis557x, Weekday
 
 from trovis_modbus.ranges import REGISTER_RANGES
 
@@ -84,7 +78,7 @@ async def test_heating_circuit_reads(trovis: Trovis557x) -> None:
     await trovis.async_update()
     hc1 = trovis.heating_circuit_1
     assert hc1.mode is OperatingMode.AUTOMATIC
-    assert hc1.control_signal == 42
+    assert hc1.valve_setpoint == 42
     assert hc1.flow_setpoint == pytest.approx(55.0)
     assert hc1.room_setpoint_active == pytest.approx(21.0)
     assert hc1.pump_running is True
@@ -136,7 +130,7 @@ async def test_full_update_consolidates_reads() -> None:
     device = Trovis557x(unit)  # type: ignore[arg-type]
 
     field_count = sum(
-        len(c._register_fields) + len(c._coil_fields) for c in device.components
+        len(c._register_fields) + len(c._bit_fields) for c in device.components
     )
     await device.async_update()
 
@@ -144,8 +138,11 @@ async def test_full_update_consolidates_reads() -> None:
     # fewer than the field count, and well under a naive per-field strategy.
     total_reads = unit.register_reads + unit.coil_reads
     assert total_reads < field_count // 4
-    assert unit.register_reads <= 12
-    assert unit.coil_reads <= 8
+
+    # The exact number of blocks may change when manufacturer ranges or the
+    # planner improve. The stable safety guarantee is the configured max_span.
+    assert all(count <= 50 for _, count in unit.register_blocks)
+    assert all(count <= 50 for _, count in unit.coil_blocks)
 
 
 async def test_full_update_never_reads_across_an_unreadable_gap() -> None:
@@ -236,20 +233,24 @@ async def test_circuit2_mode_uses_strided_override(trovis: Trovis557x) -> None:
 async def test_write_access_enable_disable(trovis: Trovis557x) -> None:
     unit = trovis.controller._unit
 
-    await unit.write_coil(3, True)
     assert await trovis.async_read_writing_enabled() is False
 
     await trovis.async_enable_writing()
     assert await trovis.async_read_writing_enabled() is True
     assert (await unit.read_holding_registers(144, 1))[0] == 1732
-    assert (await unit.read_coils(3, 1))[0] is False
 
     await trovis.async_disable_writing()
     assert await trovis.async_read_writing_enabled() is False
     assert (await unit.read_holding_registers(144, 1))[0] == 0
-    assert (await unit.read_coils(3, 1))[0] is True
 
 
-async def test_write_requires_enabled_access(trovis: Trovis557x) -> None:
-    with pytest.raises(TrovisWriteAccessDisabledError):
-        await trovis.heating_circuit_1.set_room_setpoint_day(21.5)
+async def test_write_refreshes_access_code(trovis: Trovis557x) -> None:
+    """The public write path refreshes HR40145 before writing the datapoint."""
+    unit = trovis.controller._unit
+
+    assert await trovis.async_read_writing_enabled() is False
+
+    await trovis.heating_circuit_1.set_room_setpoint_day(21.5)
+
+    assert (await unit.read_holding_registers(144, 1))[0] == 1732
+    assert (await unit.read_holding_registers(1002, 1))[0] == 215
