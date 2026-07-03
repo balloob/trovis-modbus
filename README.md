@@ -30,8 +30,8 @@ The current implementation uses two conservative manufacturer-derived profiles:
 
 | Models | Heating circuits | Register and coil profile |
 | --- | ---: | --- |
-| TROVIS 5573, 5575, 5576 | 2 | TROVIS 5573 Rev. 2.54 |
-| TROVIS 5578, 5579 | 3 | TROVIS 5578 Rev. 2.62 final |
+| TROVIS 5573, 5573-1, 5575, 5576 | 2 | TROVIS 5573 Rev. 2.54 |
+| TROVIS 5578, 5578-E, 5579 | 3 | TROVIS 5578 Rev. 2.62 final |
 
 Known gaps and manufacturer block boundaries are preserved. Reads are never planned across those boundaries.
 
@@ -169,6 +169,8 @@ Use `--framer rtu` for transparent RTU over TCP or `--framer socket` for native 
 
 ## Development and tests
 
+Install the project in editable mode and run the test suite:
+
 ```bash
 python -m pip install -e .
 uv sync
@@ -176,6 +178,17 @@ uv run pytest
 uvx prek run --all-files
 ```
 
+If `uv` is not available, alternatively run:
+
+```bash
+python -m pip install -e .
+python -m pip install pytest pytest-asyncio
+python -m compileall src tests
+python -m pytest
+```
+
 The test suite uses the in-memory mock backend provided by `modbus-connection`; no physical controller or external Modbus server is required for the normal unit tests.
+
+The current release 1.0.1 was tested with modbus-connection 3.2.0 and 3.3.0.
 
 Please read the [contributor instructions](https://github.com/Tom-Bom-badil/trovis-modbus/wiki) before opening a pull request.
