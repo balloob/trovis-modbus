@@ -28,18 +28,18 @@ def test_format_values() -> None:
 
 
 def test_parse_args_tcp() -> None:
-    args = query._parse_args(["tcp", "1.2.3.4", "--unit", "246"])
-    assert args.transport == "tcp"
-    assert args.host == "1.2.3.4"
+    args = query._parse_args(["1.2.3.4", "--unit", "246"])
+    assert args.transport == "tcp"  # the default transport
+    assert args.target == "1.2.3.4"
     assert args.unit == 246
-    assert args.port == 502
+    assert args.port is None  # backend default (502) when unset
     assert args.framer == "rtu"  # RTU-over-TCP default for Trovis gateways
 
 
 def test_parse_args_serial() -> None:
-    args = query._parse_args(["serial", "/dev/ttyUSB0", "--unit", "1"])
+    args = query._parse_args(["/dev/ttyUSB0", "--transport", "serial", "--unit", "1"])
     assert args.transport == "serial"
-    assert args.device == "/dev/ttyUSB0"
+    assert args.target == "/dev/ttyUSB0"
     assert args.unit == 1
     assert args.baudrate == 19200  # Trovis serial default
 

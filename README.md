@@ -161,11 +161,11 @@ python -m pip install -e ".[cli]"
 Examples:
 
 ```bash
-python script/query.py tcp 192.168.1.50 --unit 246
-python script/query.py serial /dev/ttyUSB0 --unit 246
+python script/query.py 192.168.1.50 --unit 246
+python script/query.py /dev/ttyUSB0 --transport serial --unit 246
 ```
 
-Use `--framer rtu` for transparent RTU over TCP or `--framer socket` for native Modbus TCP.
+The target defaults to Modbus TCP; pass `--transport serial` for a serial/USB port. Framing defaults to `--framer rtu` (transparent RTU over TCP); use `--framer socket` for native Modbus TCP.
 
 ## Development and tests
 

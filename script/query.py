@@ -5,11 +5,12 @@ Connects over Modbus TCP (a network gateway) or a serial/USB port, reads the
 whole device once, and dumps every sub-system's values to the terminal. Handy for
 checking a real controller without Home Assistant.
 
-The library only needs the connection *protocol*; this script picks the pymodbus
-backend, so run it with the ``cli`` extra::
+The library only needs the connection *protocol*; ``connect_from_args`` uses
+whichever backend is installed (tmodbus, else pymodbus), so run it with the
+``cli`` extra to pull in pymodbus::
 
-    uv run --extra cli python script/query.py tcp 192.168.1.50 --unit 246
-    uv run --extra cli python script/query.py serial /dev/ttyUSB0 --unit 246
+    uv run --extra cli python script/query.py 192.168.1.50 --unit 246
+    uv run --extra cli python script/query.py /dev/ttyUSB0 --transport serial --unit 246
 """
 
 from __future__ import annotations
@@ -20,9 +21,13 @@ import inspect
 import sys
 import time
 from enum import IntEnum
-from typing import cast
 
-from modbus_connection import ModbusConnection, ModbusError, ModbusUnit
+from modbus_connection import ModbusError
+from modbus_connection.cli_helper import (
+    CountingUnit,
+    add_connection_args,
+    connect_from_args,
+)
 from modbus_connection.model import Component, RegisterField
 
 from trovis_modbus import MonthDay, Trovis557x
@@ -42,84 +47,24 @@ SECTIONS: list[tuple[str, str]] = [
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    sub = parser.add_subparsers(dest="transport", required=True)
-
-    # Shared options available on each transport (so `--unit` can follow the host).
-    common = argparse.ArgumentParser(add_help=False)
-    common.add_argument(
+    # Trovis controllers are RS-485 RTU devices, reached directly or through a
+    # transparent (RTU-over-TCP) gateway; 'socket' framing covers a protocol-
+    # converting gateway that presents native Modbus TCP.
+    add_connection_args(
+        parser,
+        connections=(("tcp", "rtu"), ("tcp", "socket"), ("serial", "rtu")),
+    )
+    # The unit id is per-device, not part of connecting, so the CLI adds it.
+    parser.add_argument(
         "--unit",
         type=int,
         default=246,
         help="Modbus unit/station address (default: 246)",
     )
-
-    tcp = sub.add_parser(
-        "tcp", parents=[common], help="connect over Modbus TCP (network gateway)"
-    )
-    tcp.add_argument("host", help="hostname or IP of the gateway/device")
-    tcp.add_argument("--port", type=int, default=502, help="TCP port (default: 502)")
-    tcp.add_argument(
-        "--framer",
-        choices=("rtu", "socket"),
-        default="rtu",
-        help=(
-            "wire framing: 'rtu' for RTU-over-TCP (transparent serial gateways, "
-            "the Trovis default) or 'socket' for native Modbus TCP (default: rtu)"
-        ),
-    )
-
-    serial = sub.add_parser(
-        "serial", parents=[common], help="connect over a serial/USB port"
-    )
-    serial.add_argument("device", help="serial device, e.g. /dev/ttyUSB0")
-    serial.add_argument("--baudrate", type=int, default=19200, help="default: 19200")
-    serial.add_argument("--parity", choices=("N", "E", "O"), default="N")
-    serial.add_argument("--stopbits", type=int, choices=(1, 2), default=1)
-    serial.add_argument("--bytesize", type=int, choices=(7, 8), default=8)
-
+    # Override the helper's generic defaults with the Trovis line settings: RTU
+    # framing (the gateway default) and 19200 baud on serial.
+    parser.set_defaults(framer="rtu", baudrate=19200)
     return parser.parse_args(argv)
-
-
-async def _open(args: argparse.Namespace) -> ModbusConnection:
-    # Imported here so the module loads (and --help works) without a backend.
-    from modbus_connection.pymodbus import connect_serial, connect_tcp
-
-    if args.transport == "serial":
-        return await connect_serial(
-            args.device,
-            baudrate=args.baudrate,
-            parity=args.parity,
-            stopbits=args.stopbits,
-            bytesize=args.bytesize,
-        )
-    return await connect_tcp(args.host, port=args.port, framer=args.framer)
-
-
-class _CountingUnit:
-    """Wraps a ModbusUnit to count the Modbus reads it performs."""
-
-    def __init__(self, unit: ModbusUnit) -> None:
-        self._unit = unit
-        self.reads = 0
-
-    async def read_input_registers(self, address: int, count: int) -> list[int]:
-        self.reads += 1
-        return await self._unit.read_input_registers(address, count)
-
-    async def read_holding_registers(self, address: int, count: int) -> list[int]:
-        self.reads += 1
-        return await self._unit.read_holding_registers(address, count)
-
-    async def read_coils(self, address: int, count: int) -> list[bool]:
-        self.reads += 1
-        return await self._unit.read_coils(address, count)
-
-    async def read_discrete_inputs(self, address: int, count: int) -> list[bool]:
-        self.reads += 1
-        return await self._unit.read_discrete_inputs(address, count)
-
-    def __getattr__(self, name: str) -> object:
-        return getattr(self._unit, name)
 
 
 def _format(value: object) -> str:
@@ -166,13 +111,13 @@ def _print(device: Trovis557x) -> None:
 
 async def _run(args: argparse.Namespace) -> int:
     try:
-        connection = await _open(args)
+        connection = await connect_from_args(args)
     except ModbusError as err:
         print(f"Could not connect: {err}", file=sys.stderr)
         return 1
-    counting = _CountingUnit(connection.for_unit(args.unit))
+    counting = CountingUnit(connection.for_unit(args.unit))
     try:
-        device = Trovis557x(cast(ModbusUnit, counting))
+        device = Trovis557x(counting)
         start = time.monotonic()
         await device.async_update()
         elapsed = time.monotonic() - start
