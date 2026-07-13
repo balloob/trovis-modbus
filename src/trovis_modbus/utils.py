@@ -23,6 +23,10 @@ class MonthDay(NamedTuple):
     day: int
     month: int
 
+    def __str__(self) -> str:
+        """Render as the controller displays it, e.g. '15.05'."""
+        return f"{self.day:02d}.{self.month:02d}"
+
 
 def heating_curve(
     *,

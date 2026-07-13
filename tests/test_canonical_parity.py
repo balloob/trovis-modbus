@@ -107,9 +107,9 @@ def test_register_matches_canonical(
 ) -> None:
     assert address in CANON_REG, f"{label}.{field.name} address {address} not in spec"
     entry = CANON_REG[address]
-    # Plain scaled numbers (not enum-mapped) must match the canonical scale.
+    # Plain scaled numbers (not value-mapped) must match the canonical scale.
     scale = getattr(field, "scale", None)
-    if scale is not None and getattr(field, "enum_type", None) is None:
+    if scale is not None and getattr(field, "convert", None) is None:
         if address in HARDWARE_VERIFIED_SCALE:
             expected = HARDWARE_VERIFIED_SCALE[address]
         else:
