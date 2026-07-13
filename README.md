@@ -189,6 +189,6 @@ python -m pytest
 
 The test suite uses the in-memory mock backend provided by `modbus-connection`; no physical controller or external Modbus server is required for the normal unit tests.
 
-The current release 1.0.1 was tested with modbus-connection 3.2.0 and 3.3.0.
+The current release 1.0.1 was tested with modbus-connection 3.6.0.
 
 Please read the [contributor instructions](https://github.com/Tom-Bom-badil/trovis-modbus/wiki) before opening a pull request.

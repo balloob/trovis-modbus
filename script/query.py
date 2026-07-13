@@ -16,16 +16,13 @@ from __future__ import annotations
 
 import argparse
 import asyncio
-import inspect
 import sys
 import time
-from enum import IntEnum
-from typing import cast
 
-from modbus_connection import ModbusConnection, ModbusError, ModbusUnit
-from modbus_connection.model import Component, RegisterField
+from modbus_connection import ModbusConnection, ModbusError
+from modbus_connection.cli_helper import CountingUnit, print_component
 
-from trovis_modbus import MonthDay, Trovis557x
+from trovis_modbus import Trovis557x
 
 # (label, attribute name on Trovis557x) — the order things are printed.
 SECTIONS: list[tuple[str, str]] = [
@@ -95,73 +92,10 @@ async def _open(args: argparse.Namespace) -> ModbusConnection:
     return await connect_tcp(args.host, port=args.port, framer=args.framer)
 
 
-class _CountingUnit:
-    """Wraps a ModbusUnit to count the Modbus reads it performs."""
-
-    def __init__(self, unit: ModbusUnit) -> None:
-        self._unit = unit
-        self.reads = 0
-
-    async def read_input_registers(self, address: int, count: int) -> list[int]:
-        self.reads += 1
-        return await self._unit.read_input_registers(address, count)
-
-    async def read_holding_registers(self, address: int, count: int) -> list[int]:
-        self.reads += 1
-        return await self._unit.read_holding_registers(address, count)
-
-    async def read_coils(self, address: int, count: int) -> list[bool]:
-        self.reads += 1
-        return await self._unit.read_coils(address, count)
-
-    async def read_discrete_inputs(self, address: int, count: int) -> list[bool]:
-        self.reads += 1
-        return await self._unit.read_discrete_inputs(address, count)
-
-    def __getattr__(self, name: str) -> object:
-        return getattr(self._unit, name)
-
-
-def _format(value: object) -> str:
-    if value is None:
-        return "—"
-    if isinstance(value, MonthDay):
-        return f"{value.day:02d}.{value.month:02d}"
-    if isinstance(value, IntEnum):
-        return value.name.lower()
-    return str(value)
-
-
-def _values(component: Component) -> list[tuple[str, str, str]]:
-    """Public (name, value, unit) rows for a sub-system."""
-    rows: list[tuple[str, str, str]] = []
-    cls = type(component)
-    for name in dir(component):
-        if name.startswith("_"):
-            continue
-        static = inspect.getattr_static(cls, name, None)
-        # Skip methods/coroutines; keep RegisterField/CoilField descriptors,
-        # properties, and plain class constants (e.g. manufacturer).
-        if callable(static) and not isinstance(static, property):
-            continue
-        value = getattr(component, name)
-        if callable(value):
-            continue
-        unit = static.unit or "" if isinstance(static, RegisterField) else ""
-        rows.append((name, _format(value), unit))
-    return rows
-
-
 def _print(device: Trovis557x) -> None:
     for label, attr in SECTIONS:
-        component = getattr(device, attr)
-        rows = _values(component)
-        print(f"\n{label}")
-        print("-" * len(label))
-        width = max((len(name) for name, _, _ in rows), default=0)
-        for name, value, unit in rows:
-            suffix = f" {unit}" if unit and value != "—" else ""
-            print(f"  {name:<{width}}  {value}{suffix}")
+        print()
+        print_component(getattr(device, attr), title=label)
 
 
 async def _run(args: argparse.Namespace) -> int:
@@ -170,9 +104,9 @@ async def _run(args: argparse.Namespace) -> int:
     except ModbusError as err:
         print(f"Could not connect: {err}", file=sys.stderr)
         return 1
-    counting = _CountingUnit(connection.for_unit(args.unit))
+    counting = CountingUnit(connection.for_unit(args.unit))
     try:
-        device = Trovis557x(cast(ModbusUnit, counting))
+        device = Trovis557x(counting)
         start = time.monotonic()
         await device.async_update()
         elapsed = time.monotonic() - start

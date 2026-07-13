@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import importlib.util
-from datetime import time
 from pathlib import Path
 
 import pytest
+from modbus_connection.cli_helper import field_rows
 from modbus_connection.mock import MockModbusUnit
 
-from trovis_modbus import MonthDay, OperatingMode, Trovis557x
+from trovis_modbus import MonthDay, Trovis557x
 
 _SPEC = importlib.util.spec_from_file_location(
     "trovis_query", Path(__file__).resolve().parents[1] / "script" / "query.py"
@@ -19,12 +19,9 @@ query = importlib.util.module_from_spec(_SPEC)
 _SPEC.loader.exec_module(query)
 
 
-def test_format_values() -> None:
-    assert query._format(None) == "—"
-    assert query._format(OperatingMode.AUTOMATIC) == "automatic"
-    assert query._format(MonthDay(day=15, month=5)) == "15.05"
-    assert query._format(time(14, 30)) == "14:30:00"
-    assert query._format(21.5) == "21.5"
+def test_month_day_renders_as_day_dot_month() -> None:
+    """The dump prints values with str(), so MonthDay carries its own format."""
+    assert str(MonthDay(day=15, month=5)) == "15.05"
 
 
 def test_parse_args_tcp() -> None:
@@ -48,16 +45,16 @@ def test_values_lists_every_subsystem_field(mock_modbus_unit: MockModbusUnit) ->
     """Each sub-system's public fields are enumerated, methods excluded."""
     device = Trovis557x(mock_modbus_unit)
 
-    circuit_rows = query._values(device.heating_circuit_1)
-    circuit_names = {name for name, _value, _unit in circuit_rows}
+    circuit_rows = field_rows(device.heating_circuit_1)
+    circuit_names = {name for name, _value in circuit_rows}
 
     assert {"mode", "pump_running", "room_setpoint_active"} <= circuit_names
     assert "flow_temperature" not in circuit_names
     assert "return_temperature" not in circuit_names
     assert "room_temperature" not in circuit_names
 
-    sensor_rows = query._values(device.sensors)
-    sensor_names = {name for name, _value, _unit in sensor_rows}
+    sensor_rows = field_rows(device.sensors)
+    sensor_names = {name for name, _value in sensor_rows}
 
     assert {
         "af1",

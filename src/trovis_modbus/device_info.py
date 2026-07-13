@@ -12,13 +12,16 @@ from .model import TrovisComponent, gauge, integer
 class DeviceInformation(TrovisComponent):
     """Controller identity and firmware/hardware versions."""
 
-    manufacturer = "Samson"
-
     _model_raw = integer(40001, signed=False)
     system = gauge(40002, 0.1, signed=False)  # hydraulic-system / "Anlage" code
     _firmware_raw = gauge(40003, 0.01, signed=False)
     _hardware_raw = gauge(40004, 0.01, signed=False)
     _serial_raw = integer(40006, signed=False)
+
+    @property
+    def manufacturer(self) -> str:
+        """Controller manufacturer."""
+        return "Samson"
 
     @property
     def model(self) -> str:
