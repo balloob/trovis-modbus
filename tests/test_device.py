@@ -5,9 +5,11 @@ from __future__ import annotations
 from datetime import date, time
 
 import pytest
+from modbus_connection import BlockReadError, ModbusExceptionError
 from modbus_connection.mock import MockModbusConnection, MockModbusUnit
 
 from trovis_modbus import MonthDay, OperatingMode, Trovis557x, Weekday
+from trovis_modbus.addresses import register_address
 from trovis_modbus.ranges import REGISTER_RANGES
 
 from .conftest import COILS, HOLDING
@@ -253,3 +255,30 @@ async def test_write_refreshes_access_code(trovis: Trovis557x) -> None:
 
     assert (await unit.read_holding_registers(144, 1))[0] == 1732
     assert (await unit.read_holding_registers(1002, 1))[0] == 215
+
+
+async def test_refused_register_block_fails_the_update(
+    mock_modbus_unit: MockModbusUnit,
+) -> None:
+    """A controller refusing a register block fails the update, naming the block.
+
+    A refused block used to decode to None, hiding a controller that would not
+    serve the registers we asked for. It now raises, so a caller can tell an
+    absent sensor (a NaN sentinel) apart from a block the device rejected.
+    """
+    mock_modbus_unit.holding.update(HOLDING)
+    mock_modbus_unit.coils.update(COILS)
+    device = Trovis557x(mock_modbus_unit)
+
+    # HR40010 (sensors.af1) — read on every update, on every model.
+    refused = register_address(40010)
+    mock_modbus_unit.fail_read(refused, ModbusExceptionError(2))
+
+    with pytest.raises(BlockReadError) as raised:
+        await device.async_update()
+
+    error = raised.value
+    assert error.space == "holding"
+    assert error.address <= refused < error.address + error.count
+    assert error.exception_code == 2
+    assert isinstance(error.__cause__, ModbusExceptionError)
